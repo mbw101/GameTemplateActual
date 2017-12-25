@@ -14,11 +14,24 @@ namespace GameTemplate.Screens
 {
     public partial class GameScreen : UserControl
     {
-        int lives, score;
+        int lives = 3, score = 0;
         int barrier1health = 16, barrier2health = 16,
             barrier3health = 16, barrier4health = 16;
         bool bulletOnScreen = false;
         bool leftKeyDown, shootKeyDown, rightKeyDown, exit;
+        bool alienKilled = false;
+
+        //enum Direction
+        //{
+        //    LEFT,
+        //    RIGHT
+        //}
+
+        Random randNum;
+        //Direction alienDirection;
+
+        // when the aliens have to move down
+        //bool alienDown = false;
 
         // Graphics
         Graphics offScreen;
@@ -51,8 +64,8 @@ namespace GameTemplate.Screens
         const int BULLET_SPEED = 10;
         const int PLAYER_SPEED = 4;
         const int ALIEN_SPEED = 1;
-        const int ALIEN_WIDTH = 11;
-        const int ALIEN_HEIGHT = 10;
+        const int ALIEN_WIDTH = 45;
+        const int ALIEN_HEIGHT = 24;
 
         public GameScreen()
         {
@@ -67,6 +80,8 @@ namespace GameTemplate.Screens
             titleFont = new Font("Consolas", 36, FontStyle.Regular);
             menuFont = new Font("Consolas", 24, FontStyle.Regular);
             subFont = new Font("Consolas", 12, FontStyle.Regular);
+
+            //alienDirection = Direction.RIGHT;
 
             // set up rectangles
             playerRect.X = 20;
@@ -116,13 +131,37 @@ namespace GameTemplate.Screens
             barrier4 = barrier1;
 
             alienRow1 = new Rectangle[11];
+            alienRow2 = new Rectangle[11];
+            alienRow3 = new Rectangle[11];
+            alienRow4 = new Rectangle[11];
+            alienRow5 = new Rectangle[11];
 
             for (int i = 0; i < alienRow1.Length; i++)
             {
-                alienRow1[i].X = 25 + (75 * i);
-                alienRow1[i].Y = 50;
+                alienRow1[i].X = 100 + (75 * i);
+                alienRow1[i].Y = 100;
                 alienRow1[i].Width = 36;
                 alienRow1[i].Height = 24;
+
+                alienRow2[i].X = 100 + (75 * i);
+                alienRow2[i].Y = 150;
+                alienRow2[i].Width = 36;
+                alienRow2[i].Height = 24;
+
+                alienRow3[i].X = 100 + (75 * i);
+                alienRow3[i].Y = 200;
+                alienRow3[i].Width = 36;
+                alienRow3[i].Height = 24;
+
+                alienRow4[i].X = 100 + (75 * i);
+                alienRow4[i].Y = 250;
+                alienRow4[i].Width = 36;
+                alienRow4[i].Height = 24;
+
+                alienRow5[i].X = 100 + (75 * i);
+                alienRow5[i].Y = 300;
+                alienRow5[i].Width = 36;
+                alienRow5[i].Height = 24;
             }
         }
 
@@ -322,39 +361,108 @@ namespace GameTemplate.Screens
 
 
             #region monster movements - TO BE COMPLETED
-
+            
 
             #endregion
 
             #region collision detection - TO BE COMPLETED
-            if (bullet.IntersectsWith(barrier1Rect) && barrier1health != 0)
-            {
-                bulletOnScreen = false;
-                barrier1health--;
 
-                // reset the x
-                bullet.X = 0;
-            }
-            if (bullet.IntersectsWith(barrier2Rect) && barrier2health != 0)
+            if (bulletOnScreen)
             {
-                bulletOnScreen = false;
-                barrier2health--;
-                // reset the x
-                bullet.X = 0;
-            }
-            if (bullet.IntersectsWith(barrier3Rect) && barrier3health != 0)
-            {
-                bulletOnScreen = false;
-                barrier3health--;
-                // reset the x
-                bullet.X = 0;
-            }
-            if (bullet.IntersectsWith(barrier4Rect) && barrier4health != 0)
-            {
-                bulletOnScreen = false;
-                barrier4health--;
-                // reset the x
-                bullet.X = 0;
+                if (bullet.IntersectsWith(barrier1Rect) && barrier1health != 0)
+                {
+                    bulletOnScreen = false;
+                    barrier1health--;
+
+                    // reset the x
+                    bullet.X = 0;
+                }
+                if (bullet.IntersectsWith(barrier2Rect) && barrier2health != 0)
+                {
+                    bulletOnScreen = false;
+                    barrier2health--;
+                    // reset the x
+                    bullet.X = 0;
+                }
+                if (bullet.IntersectsWith(barrier3Rect) && barrier3health != 0)
+                {
+                    bulletOnScreen = false;
+                    barrier3health--;
+                    // reset the x
+                    bullet.X = 0;
+                }
+                if (bullet.IntersectsWith(barrier4Rect) && barrier4health != 0)
+                {
+                    bulletOnScreen = false;
+                    barrier4health--;
+                    // reset the x
+                    bullet.X = 0;
+                }
+
+                // alien collision
+                for (int i = 0; i < alienRow1.Length; i++)
+                {
+                    // row 1
+                    if (bullet.IntersectsWith(alienRow1[i]))
+                    {
+                        alienRow1[i].Width = 0;
+                        alienRow1[i].Height = 0;
+
+                        // get rid of bullet
+                        bulletOnScreen = false;
+                        
+
+                        playerBullet.Stop();
+                    }
+
+                    // row 2
+                    if (bullet.IntersectsWith(alienRow2[i]))
+                    {
+                        alienRow2[i].Width = 0;
+                        alienRow2[i].Height = 0;
+
+                        // get rid of bullet
+                        bulletOnScreen = false;
+
+                        playerBullet.Stop();
+                    }
+
+                    // row 3
+                    if (bullet.IntersectsWith(alienRow3[i]))
+                    {
+                        alienRow3[i].Width = 0;
+                        alienRow3[i].Height = 0;
+
+                        // get rid of bullet
+                        bulletOnScreen = false;
+
+                        playerBullet.Stop();
+                    }
+
+                    // row 4
+                    if (bullet.IntersectsWith(alienRow4[i]))
+                    {
+                        alienRow4[i].Width = 0;
+                        alienRow4[i].Height = 0;
+
+                        // get rid of bullet
+                        bulletOnScreen = false;
+
+                        playerBullet.Stop();
+                    }
+
+                    // row 5
+                    if (bullet.IntersectsWith(alienRow5[i]))
+                    {
+                        alienRow5[i].Width = 0;
+                        alienRow5[i].Height = 0;
+
+                        // get rid of bullet
+                        bulletOnScreen = false;
+
+                        playerBullet.Stop();
+                    }
+                }
             }
 
             #endregion
@@ -491,6 +599,28 @@ namespace GameTemplate.Screens
             foreach (Rectangle alien in alienRow1)
             {
                 e.Graphics.DrawImage(alien1, alien);
+            }
+            foreach (Rectangle alien in alienRow2)
+            {
+                e.Graphics.DrawImage(alien1, alien);
+            }
+            foreach (Rectangle alien in alienRow3)
+            {
+                e.Graphics.DrawImage(alien2, alien);
+            }
+            foreach (Rectangle alien in alienRow4)
+            {
+                e.Graphics.DrawImage(alien2, alien);
+            }
+            foreach (Rectangle alien in alienRow5)
+            {
+                e.Graphics.DrawImage(alien3, alien);
+            }
+
+            if (alienKilled)
+            {
+                // draw explosion
+
             }
         }
     }
