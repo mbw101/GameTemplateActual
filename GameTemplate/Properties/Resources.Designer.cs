@@ -19,7 +19,7 @@ namespace GameTemplate.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alien10 {
+        internal static System.Drawing.Bitmap alien10altBig {
             get {
-                object obj = ResourceManager.GetObject("alien10", resourceCulture);
+                object obj = ResourceManager.GetObject("alien10altBig", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alien20 {
+        internal static System.Drawing.Bitmap alien10Big {
             get {
-                object obj = ResourceManager.GetObject("alien20", resourceCulture);
+                object obj = ResourceManager.GetObject("alien10Big", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,10 +83,49 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alien40 {
+        internal static System.Drawing.Bitmap alien20altBig {
             get {
-                object obj = ResourceManager.GetObject("alien40", resourceCulture);
+                object obj = ResourceManager.GetObject("alien20altBig", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap alien20Big {
+            get {
+                object obj = ResourceManager.GetObject("alien20Big", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap alien40altBig {
+            get {
+                object obj = ResourceManager.GetObject("alien40altBig", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap alien40Big {
+            get {
+                object obj = ResourceManager.GetObject("alien40Big", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream alienHit {
+            get {
+                return ResourceManager.GetStream("alienHit", resourceCulture);
             }
         }
         
@@ -113,9 +152,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap coverDmg1 {
+        internal static System.Drawing.Bitmap coverDmg1Big {
             get {
-                object obj = ResourceManager.GetObject("coverDmg1", resourceCulture);
+                object obj = ResourceManager.GetObject("coverDmg1Big", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +162,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap coverDmg2 {
+        internal static System.Drawing.Bitmap coverDmg2Big {
             get {
-                object obj = ResourceManager.GetObject("coverDmg2", resourceCulture);
+                object obj = ResourceManager.GetObject("coverDmg2Big", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +172,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap coverDmg3 {
+        internal static System.Drawing.Bitmap coverDmg3Big {
             get {
-                object obj = ResourceManager.GetObject("coverDmg3", resourceCulture);
+                object obj = ResourceManager.GetObject("coverDmg3Big", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +182,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap coverDmg4 {
+        internal static System.Drawing.Bitmap coverDmg4Big {
             get {
-                object obj = ResourceManager.GetObject("coverDmg4", resourceCulture);
+                object obj = ResourceManager.GetObject("coverDmg4Big", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +192,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap coverFull {
+        internal static System.Drawing.Bitmap coverFullBig {
             get {
-                object obj = ResourceManager.GetObject("coverFull", resourceCulture);
+                object obj = ResourceManager.GetObject("coverFullBig", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

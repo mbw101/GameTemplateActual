@@ -15,8 +15,8 @@ namespace GameTemplate.Screens
     public partial class GameScreen : UserControl
     {
         int lives = 3, score = 0;
-        int barrier1health = 16, barrier2health = 16,
-            barrier3health = 16, barrier4health = 16;
+        int barrier1health = 15, barrier2health = 15,
+            barrier3health = 15, barrier4health = 15;
         bool bulletOnScreen = false, alienBulletOnScreen = false;
         bool leftKeyDown, shootKeyDown, rightKeyDown, exit;
         bool alienKilled = false;
@@ -66,7 +66,7 @@ namespace GameTemplate.Screens
         const int ALIEN_DOWNSPEED = 10;
         const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
-        const int MOVEMENT_TIME = 10;
+        const int MOVEMENT_TIME = 512;
 
         int elapsed = 0;
 
@@ -118,15 +118,15 @@ namespace GameTemplate.Screens
             ufoSound = new SoundPlayer(Properties.Resources.ufo_onscreen);
             ufoHit = new SoundPlayer(Properties.Resources.ufo_killed);
             alienBullet = new SoundPlayer(Properties.Resources.invader_shoot);
-            //alienHit = new SoundPlayer(Properties.Resources.)
+            alienHit = new SoundPlayer(Properties.Resources.alienHit);
 
             bullet = new Bitmap(Properties.Resources.bullet); 
             player = new Bitmap(Properties.Resources.playerBig);
-            alien1 = new Bitmap(Properties.Resources.alien10);
-            alien2 = new Bitmap(Properties.Resources.alien20);
-            alien3 = new Bitmap(Properties.Resources.alien40);
+            alien1 = new Bitmap(Properties.Resources.alien10Big);
+            alien2 = new Bitmap(Properties.Resources.alien20Big);
+            alien3 = new Bitmap(Properties.Resources.alien40Big);
             ufo = new Bitmap(Properties.Resources.alienRandom);
-            barrier1 = new Bitmap(Properties.Resources.coverFull);
+            barrier1 = new Bitmap(Properties.Resources.coverFullBig);
             barrier2 = barrier1;
             barrier3 = barrier1;
             barrier4 = barrier1;        
@@ -286,11 +286,15 @@ namespace GameTemplate.Screens
 
 
             #region monster movements - TO BE COMPLETED
+
+
+
             elapsed += gameTimer.Interval;
 
             if (elapsed >= MOVEMENT_TIME)
             {
                 elapsed = 0;
+
                 for (int i = 0; i < row1.Count; i++)
                 {
                     if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
@@ -354,6 +358,7 @@ namespace GameTemplate.Screens
                             row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                     }
                 }
+
 
                 for (int i = 0; i < row3.Count; i++)
                 {
@@ -484,6 +489,19 @@ namespace GameTemplate.Screens
                     alienMovedown = false;
                 }
             }
+
+            //if (elapsed <= MOVEMENT_TIME / 2)
+            //{
+            //    alien1 = new Bitmap(Properties.Resources.alien10Big);
+            //    alien2 = new Bitmap(Properties.Resources.alien20Big);
+            //    alien3 = new Bitmap(Properties.Resources.alien40Big);
+            //}
+            //else if (elapsed >= MOVEMENT_TIME / 2)
+            //{
+            //    alien1 = new Bitmap(Properties.Resources.alien10altBig);
+            //    alien2 = new Bitmap(Properties.Resources.alien20altBig);
+            //    alien3 = new Bitmap(Properties.Resources.alien40altBig);
+            //}
             #endregion
 
             #region Monster Shooting
@@ -517,6 +535,7 @@ namespace GameTemplate.Screens
             // only check collision if bullet is on screen
             if (bulletOnScreen)
             {
+                #region Barrier Collision
                 if (bulletRect.IntersectsWith(barrier1Rect) && barrier1health != 0)
                 {
                     bulletOnScreen = false;
@@ -546,21 +565,22 @@ namespace GameTemplate.Screens
                     // reset the x
                     bulletRect.X = 0;
                 }
+                #endregion
 
                 // alien collision
                 foreach (Rectangle alien in row1)
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
+                        playerBullet.Stop();
+
                         // play explosion
-                        //alienHit.Play();
+                        alienHit.Play();
 
                         row1.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
-
-                        playerBullet.Stop();
                         break;
                     }
                 }
@@ -569,15 +589,15 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
+                        playerBullet.Stop();
+
                         // play explosion
-                        //alienHit.Play();
+                        alienHit.Play();
 
                         row2.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
-
-                        playerBullet.Stop();
                         break;
                     }
                 }
@@ -586,15 +606,15 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
+                        playerBullet.Stop();
+
                         // play explosion
-                        //alienHit.Play();
+                        alienHit.Play();
 
                         row3.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
-
-                        playerBullet.Stop();
                         break;
                     }
                 }
@@ -603,14 +623,14 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
+                        playerBullet.Stop();
+
                         // play explosion
-                        //alienHit.Play();
+                        alienHit.Play();
                         row4.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
-
-                        playerBullet.Stop();
                         break;
                     }
                 }
@@ -619,15 +639,14 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
-                        // play explosion
-                        //alienHit.Play();
-
-                        row5.Remove(alien);
+                        playerBullet.Stop();
 
                         // get rid of bullet
                         bulletOnScreen = false;
+                        // play explosion
+                        alienHit.Play();
 
-                        playerBullet.Stop();
+                        row5.Remove(alien);
                         break;
                     }
                 }
@@ -638,54 +657,70 @@ namespace GameTemplate.Screens
             #region barrier logic
             if (barrier1health == 12)
             {
-                barrier1 = new Bitmap(Properties.Resources.coverDmg1);
+                barrier1 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier1health == 8)
+            else if (barrier1health == 9)
             {
-                barrier1 = new Bitmap(Properties.Resources.coverDmg2);
+                barrier1 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier1health == 4)
+            else if (barrier1health == 6)
             {
-                barrier1 = new Bitmap(Properties.Resources.coverDmg3);
+                barrier1 = new Bitmap(Properties.Resources.coverDmg3Big);
+            }
+            else if (barrier1health == 3)
+            {
+                barrier1 = new Bitmap(Properties.Resources.coverDmg4Big);
             }
 
             if (barrier2health == 12)
             {
-                barrier2 = new Bitmap(Properties.Resources.coverDmg1);
+                barrier2 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier2health == 8)
+            else if (barrier2health == 9)
             {
-                barrier2 = new Bitmap(Properties.Resources.coverDmg2);
+                barrier2 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier2health == 4)
+            else if (barrier2health == 6)
             {
-                barrier2 = new Bitmap(Properties.Resources.coverDmg3);
+                barrier2 = new Bitmap(Properties.Resources.coverDmg3Big);
+            }
+            else if (barrier2health == 3)
+            {
+                barrier2 = new Bitmap(Properties.Resources.coverDmg4Big);
             }
 
             if (barrier3health == 12)
             {
-                barrier3 = new Bitmap(Properties.Resources.coverDmg1);
+                barrier3 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier3health == 8)
+            else if (barrier3health == 9)
             {
-                barrier3 = new Bitmap(Properties.Resources.coverDmg2);
+                barrier3 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier3health == 4)
+            else if (barrier3health == 6)
             {
-                barrier3 = new Bitmap(Properties.Resources.coverDmg3);
+                barrier3 = new Bitmap(Properties.Resources.coverDmg3Big);
+            }
+            else if (barrier3health == 3)
+            {
+                barrier3 = new Bitmap(Properties.Resources.coverDmg4Big);
             }
 
             if (barrier4health == 12)
             {
-                barrier4 = new Bitmap(Properties.Resources.coverDmg1);
+                barrier4 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier4health == 8)
+            else if (barrier4health == 9)
             {
-                barrier4 = new Bitmap(Properties.Resources.coverDmg2);
+                barrier4 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier4health == 4)
+            else if (barrier4health == 6)
             {
-                barrier4 = new Bitmap(Properties.Resources.coverDmg3);
+                barrier4 = new Bitmap(Properties.Resources.coverDmg3Big);
+            }
+            else if (barrier4health == 3)
+            {
+                barrier4 = new Bitmap(Properties.Resources.coverDmg4Big);
             }
             #endregion
 

@@ -137,31 +137,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\alien10.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\alien20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\alien40.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\alienRandom.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\coverDmg1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\coverDmg2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\coverDmg3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\coverDmg4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\coverFull.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\explosion.png" />
@@ -189,6 +165,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bullet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alien10Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alien20Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alien40Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coverDmg1Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coverDmg2Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coverDmg3Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coverDmg4Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coverFullBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alienHit.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alien10altBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alien20altBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alien40altBig.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
