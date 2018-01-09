@@ -55,13 +55,18 @@ namespace GameTemplate.Screens
         {
             foreach (Control c in this.Controls)
             {
-                c.Location = new Point(c.Location.X, c.Location.Y + 75);             
+                if (c != creditLabel)
+                {
+                    c.Location = new Point(c.Location.X, c.Location.Y + 75);
+                }
+                else
+                {
+                    c.Location = new Point(700, 50);
+                }
             }
 
-            gameTitle.Font = new Font("Courier New", 30);
+            gameTitle.Font = new Font("Verdana", 30);
             gameTitle.Location = new Point(ScreenControl.controlWidth / 2 - gameTitle.Size.Width / 2, 50);
         }
-
-
     }
 }

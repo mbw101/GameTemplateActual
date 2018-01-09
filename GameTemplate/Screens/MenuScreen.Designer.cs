@@ -32,6 +32,7 @@
             this.playButton = new System.Windows.Forms.Button();
             this.gameTitle = new System.Windows.Forms.Label();
             this.instructionButton = new System.Windows.Forms.Button();
+            this.creditLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // exitButton
@@ -40,7 +41,7 @@
             this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exitButton.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitButton.Location = new System.Drawing.Point(97, 226);
-            this.exitButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.exitButton.Margin = new System.Windows.Forms.Padding(2);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(120, 39);
             this.exitButton.TabIndex = 10;
@@ -52,7 +53,7 @@
             // 
             this.playButton.BackColor = System.Drawing.Color.Tomato;
             this.playButton.Location = new System.Drawing.Point(97, 67);
-            this.playButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.playButton.Margin = new System.Windows.Forms.Padding(2);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(120, 39);
             this.playButton.TabIndex = 6;
@@ -79,7 +80,7 @@
             this.instructionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.instructionButton.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.instructionButton.Location = new System.Drawing.Point(97, 135);
-            this.instructionButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.instructionButton.Margin = new System.Windows.Forms.Padding(2);
             this.instructionButton.Name = "instructionButton";
             this.instructionButton.Size = new System.Drawing.Size(120, 39);
             this.instructionButton.TabIndex = 7;
@@ -87,16 +88,27 @@
             this.instructionButton.UseVisualStyleBackColor = false;
             this.instructionButton.Click += new System.EventHandler(this.instructionButton_Click);
             // 
+            // creditLabel
+            // 
+            this.creditLabel.AutoSize = true;
+            this.creditLabel.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.creditLabel.Location = new System.Drawing.Point(28, 271);
+            this.creditLabel.Name = "creditLabel";
+            this.creditLabel.Size = new System.Drawing.Size(457, 25);
+            this.creditLabel.TabIndex = 11;
+            this.creditLabel.Text = "Made by Avery Carins and Malcolm Wright";
+            // 
             // MenuScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Maroon;
+            this.Controls.Add(this.creditLabel);
             this.Controls.Add(this.instructionButton);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.playButton);
             this.Controls.Add(this.gameTitle);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MenuScreen";
             this.Size = new System.Drawing.Size(321, 296);
             this.ResumeLayout(false);
@@ -110,5 +122,6 @@
         private System.Windows.Forms.Button playButton;
         private System.Windows.Forms.Label gameTitle;
         private System.Windows.Forms.Button instructionButton;
+        private System.Windows.Forms.Label creditLabel;
     }
 }

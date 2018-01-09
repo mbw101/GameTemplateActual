@@ -28,7 +28,7 @@ namespace GameTemplate
         public static Color buttonBackColor = Color.White;
         public static Color buttonActiveColor = Color.Green;
         public static FlatStyle buttonFlatStyle = FlatStyle.Flat;
-        public static Font buttonFont = new Font("Segoe UI", 10);
+        public static Font buttonFont = new Font("Verdana", 10);
 
         public static Boolean firstTime = true;
 

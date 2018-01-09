@@ -21,17 +21,16 @@ namespace GameTemplate.Screens
         bool leftKeyDown, shootKeyDown, rightKeyDown, exit;
         bool alienKilled = false;
 
-        //enum Direction
-        //{
-        //    LEFT,
-        //    RIGHT
-        //}
+        enum Direction
+        {
+            LEFT,
+            RIGHT
+        }
 
         Random randNum;
-        //Direction alienDirection;
+        Direction alienDirection;
 
-        // when the aliens have to move down
-        //bool alienDown = false;
+        bool alienMovedown = false;
 
         // Graphics
         Graphics offScreen;
@@ -52,7 +51,6 @@ namespace GameTemplate.Screens
         List<Rectangle> row3 = new List<Rectangle>(11);
         List<Rectangle> row4 = new List<Rectangle>(11);
         List<Rectangle> row5 = new List<Rectangle>(11);
-        // Rectangle alienRow1 = new Rectangle[11];
 
         // sounds and images
         SoundPlayer playerBullet, alienBullet, alienHit, playerHit,
@@ -65,6 +63,7 @@ namespace GameTemplate.Screens
         const int BULLET_SPEED = 10;
         const int PLAYER_SPEED = 4;
         const int ALIEN_SPEED = 1;
+        const int ALIEN_DOWNSPEED = 10;
         const int ALIEN_WIDTH = 45;
         const int ALIEN_HEIGHT = 24;
 
@@ -207,38 +206,7 @@ namespace GameTemplate.Screens
                     break;
                 default:
                     break;
-            }
-
-            //player 2 button presses
-            switch (e.KeyCode)
-            {
-                case Keys.A:
-                    aDown = true;
-                    break;
-                case Keys.S:
-                    sDown = true;
-                    break;
-                case Keys.D:
-                    dDown = true;
-                    break;
-                case Keys.W:
-                    wDown = true;
-                    break;
-                case Keys.C:
-                    cDown = true;
-                    break;
-                case Keys.V:
-                    vDown = true;
-                    break;
-                case Keys.X:
-                    xDown = true;
-                    break;
-                case Keys.Z:
-                    zDown = true;
-                    break;
-                default:
-                    break;
-            }
+            }      
         }
         private void GameScreen_KeyUp(object sender, KeyEventArgs e)
         {
@@ -268,37 +236,6 @@ namespace GameTemplate.Screens
                     break;
                 case Keys.Space:
                     spaceDown = false;
-                    break;
-                default:
-                    break;
-            }
-
-            //player 2 button releases
-            switch (e.KeyCode)
-            {
-                case Keys.A:
-                    aDown = false;
-                    break;
-                case Keys.S:
-                    sDown = false;
-                    break;
-                case Keys.D:
-                    dDown = false;
-                    break;
-                case Keys.W:
-                    wDown = false;
-                    break;
-                case Keys.C:
-                    cDown = false;
-                    break;
-                case Keys.V:
-                    vDown = false;
-                    break;
-                case Keys.X:
-                    xDown = false;
-                    break;
-                case Keys.Z:
-                    zDown = false;
                     break;
                 default:
                     break;
@@ -348,14 +285,82 @@ namespace GameTemplate.Screens
             #endregion
 
 
-
             #region monster movements - TO BE COMPLETED
-            
+            for (int i = 0; i < row1.Capacity; i++)
+            {
+                if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                {
+                    // change direction to left
+                    alienDirection = Direction.LEFT;
+
+                    // move down
+                    alienMovedown = true;
+                }
+                if (row1[i].X <= 0)
+                {
+                    // change direction to right
+                    alienDirection = Direction.RIGHT;
+
+                    // move down
+                    alienMovedown = true;
+                }
+                // move aliens based on direction
+                if (alienDirection == Direction.LEFT)
+                {
+                    row1[i] = new Rectangle(row1[i].X - ALIEN_SPEED,
+                        row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row2[i] = new Rectangle(row2[i].X - ALIEN_SPEED,
+                        row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row3[i] = new Rectangle(row3[i].X - ALIEN_SPEED,
+                        row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row4[i] = new Rectangle(row4[i].X - ALIEN_SPEED,
+                        row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row5[i] = new Rectangle(row5[i].X - ALIEN_SPEED,
+                        row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
+                else if (alienDirection == Direction.RIGHT)
+                {
+                    row1[i] = new Rectangle(row1[i].X + ALIEN_SPEED,
+                        row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row2[i] = new Rectangle(row2[i].X + ALIEN_SPEED,
+                        row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row3[i] = new Rectangle(row3[i].X + ALIEN_SPEED,
+                        row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row4[i] = new Rectangle(row4[i].X + ALIEN_SPEED,
+                        row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row5[i] = new Rectangle(row5[i].X + ALIEN_SPEED,
+                        row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
+                // check to see if they have to move down
+                // change direction
+            }
+
+
+            // move all aliens down
+            if (alienMovedown)
+            {
+                for (int i = 0; i < row1.Capacity; i++)
+                {
+                    row1[i] = new Rectangle(row1[i].X, 
+                        row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row2[i] = new Rectangle(row2[i].X,
+                        row2[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row3[i] = new Rectangle(row3[i].X,
+                        row3[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row4[i] = new Rectangle(row4[i].X,
+                        row4[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    row5[i] = new Rectangle(row5[i].X,
+                        row5[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
+
+                alienMovedown = false;
+            }
 
             #endregion
 
             #region collision detection - TO BE COMPLETED
 
+            // only check collision if bullet is on screen
             if (bulletOnScreen)
             {
                 if (bulletRect.IntersectsWith(barrier1Rect) && barrier1health != 0)
@@ -389,10 +394,12 @@ namespace GameTemplate.Screens
                 }
 
                 // alien collision
-                for (int i = 0; i < row1.Count; i++)
+                for (int i = 0; i < row1.Capacity; i++)
                 {
                     if (bulletRect.IntersectsWith(row1[i]))
                     {
+                        // show explosion
+                        
                         row1.Remove(row1[i]);
 
                         // get rid of bullet
@@ -402,7 +409,7 @@ namespace GameTemplate.Screens
                     }               
                 }
 
-                for (int i = 0; i < row2.Count; i++)
+                for (int i = 0; i < row2.Capacity; i++)
                 {
                     if (bulletRect.IntersectsWith(row2[i]))
                     {
@@ -415,7 +422,7 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                for (int i = 0; i < row3.Count; i++)
+                for (int i = 0; i < row3.Capacity; i++)
                 {
                     if (bulletRect.IntersectsWith(row3[i]))
                     {
@@ -428,7 +435,7 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                for (int i = 0; i < row4.Count; i++)
+                for (int i = 0; i < row4.Capacity; i++)
                 {
                     if (bulletRect.IntersectsWith(row4[i]))
                     {
@@ -441,7 +448,7 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                for (int i = 0; i < row5.Count; i++)
+                for (int i = 0; i < row5.Capacity; i++)
                 {
                     if (bulletRect.IntersectsWith(row5[i]))
                     {
@@ -454,7 +461,7 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                for (int i = 0; i < row1.Count; i++)
+                for (int i = 0; i < row1.Capacity; i++)
                 {
                     if (bulletRect.IntersectsWith(row1[i]))
                     {
@@ -568,6 +575,7 @@ namespace GameTemplate.Screens
             e.Graphics.DrawString("Lives: " + lives, subFont,
                 solidBrush, Width - 160, 25);
 
+            #region Barrier Drawing
             if (barrier1health != 0)
             {
                 e.Graphics.DrawImage(barrier1, barrier1Rect.X, barrier1Rect.Y,
@@ -592,7 +600,8 @@ namespace GameTemplate.Screens
                 e.Graphics.DrawImage(barrier4, barrier4Rect.X,
                     barrier4Rect.Y, barrier4Rect.Width,
                     barrier4Rect.Height);
-            } 
+            }
+#endregion
 
             if (bulletOnScreen)
             {
@@ -619,27 +628,6 @@ namespace GameTemplate.Screens
             {
                 e.Graphics.DrawImage(alien3, alien);
             }
-
-            //foreach (Rectangle alien in alienRow1)
-            //{
-            //    e.Graphics.DrawImage(alien1, alien);
-            //}
-            //foreach (Rectangle alien in alienRow2)
-            //{
-            //    e.Graphics.DrawImage(alien1, alien);
-            //}
-            //foreach (Rectangle alien in alienRow3)
-            //{
-            //    e.Graphics.DrawImage(alien2, alien);
-            //}
-            //foreach (Rectangle alien in alienRow4)
-            //{
-            //    e.Graphics.DrawImage(alien2, alien);
-            //}
-            //foreach (Rectangle alien in alienRow5)
-            //{
-            //    e.Graphics.DrawImage(alien3, alien);
-            //}
 
             if (alienKilled)
             {
