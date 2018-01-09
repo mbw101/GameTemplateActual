@@ -17,7 +17,7 @@ namespace GameTemplate.Screens
         int lives = 3, score = 0;
         int barrier1health = 16, barrier2health = 16,
             barrier3health = 16, barrier4health = 16;
-        bool bulletOnScreen = false;
+        bool bulletOnScreen = false, alienBulletOnScreen = false;
         bool leftKeyDown, shootKeyDown, rightKeyDown, exit;
         bool alienKilled = false;
 
@@ -27,7 +27,7 @@ namespace GameTemplate.Screens
             RIGHT
         }
 
-        Random randNum;
+        Random randNum = new Random();
         Direction alienDirection;
 
         bool alienMovedown = false;
@@ -43,7 +43,7 @@ namespace GameTemplate.Screens
              barrier1, barrier2, barrier3, barrier4, bullet;
         // we can change the barrier image depending on the health
 
-        Rectangle bulletRect, playerRect, barrier1Rect,
+        Rectangle bulletRect, alienBulletRect, playerRect, barrier1Rect,
             barrier2Rect, barrier3Rect, barrier4Rect;
 
         List<Rectangle> row1 = new List<Rectangle>(11);
@@ -64,14 +64,15 @@ namespace GameTemplate.Screens
         const int PLAYER_SPEED = 4;
         const int ALIEN_SPEED = 1;
         const int ALIEN_DOWNSPEED = 10;
-        const int ALIEN_WIDTH = 45;
+        const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
+        const int MOVEMENT_TIME = 10;
+
+        int elapsed = 0;
 
         public GameScreen()
         {
             InitializeComponent();
-
-           // this.BackColor = Color.Gray;
 
             pen = new Pen(Color.White, 10);
             solidBrush = new SolidBrush(Color.White);
@@ -80,8 +81,6 @@ namespace GameTemplate.Screens
             titleFont = new Font("Consolas", 36, FontStyle.Regular);
             menuFont = new Font("Consolas", 24, FontStyle.Regular);
             subFont = new Font("Consolas", 12, FontStyle.Regular);
-
-            //alienDirection = Direction.RIGHT;
 
             // set up rectangles
             playerRect.X = 20;
@@ -119,6 +118,7 @@ namespace GameTemplate.Screens
             ufoSound = new SoundPlayer(Properties.Resources.ufo_onscreen);
             ufoHit = new SoundPlayer(Properties.Resources.ufo_killed);
             alienBullet = new SoundPlayer(Properties.Resources.invader_shoot);
+            //alienHit = new SoundPlayer(Properties.Resources.)
 
             bullet = new Bitmap(Properties.Resources.bullet); 
             player = new Bitmap(Properties.Resources.playerBig);
@@ -139,11 +139,11 @@ namespace GameTemplate.Screens
                 Rectangle tempRect4 = new Rectangle();
                 Rectangle tempRect5 = new Rectangle();
 
-                tempRect = new Rectangle(100 + (75 * i), 100, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect2 = new Rectangle(100 + (75 * i), 150, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect3 = new Rectangle(100 + (75 * i), 200, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect4 = new Rectangle(100 + (75 * i), 250, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect5 = new Rectangle(100 + (75 * i), 300, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect = new Rectangle(100 + (45 * i), 100, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect2 = new Rectangle(100 + (45 * i), 150, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect3 = new Rectangle(100 + (45 * i), 200, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect4 = new Rectangle(100 + (45 * i), 250, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect5 = new Rectangle(100 + (45 * i), 300, ALIEN_WIDTH, ALIEN_HEIGHT);
 
                 row1.Add(tempRect);
                 row2.Add(tempRect2);
@@ -286,74 +286,228 @@ namespace GameTemplate.Screens
 
 
             #region monster movements - TO BE COMPLETED
-            for (int i = 0; i < row1.Capacity; i++)
+            elapsed += gameTimer.Interval;
+
+            if (elapsed >= MOVEMENT_TIME)
             {
-                if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                elapsed = 0;
+                for (int i = 0; i < row1.Count; i++)
                 {
-                    // change direction to left
-                    alienDirection = Direction.LEFT;
+                    if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    {
+                        // change direction to left
+                        alienDirection = Direction.LEFT;
 
-                    // move down
-                    alienMovedown = true;
-                }
-                if (row1[i].X <= 0)
-                {
-                    // change direction to right
-                    alienDirection = Direction.RIGHT;
+                        // move down
+                        alienMovedown = true;
+                    }
+                    if (row1[i].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
 
-                    // move down
-                    alienMovedown = true;
+                        // move down
+                        alienMovedown = true;
+                    }
+                    // move aliens based on direction
+                    if (alienDirection == Direction.LEFT)
+                    {
+                        row1[i] = new Rectangle(row1[i].X - ALIEN_SPEED,
+                            row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                    else if (alienDirection == Direction.RIGHT)
+                    {
+                        row1[i] = new Rectangle(row1[i].X + ALIEN_SPEED,
+                            row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                    // check to see if they have to move down
+                    // change direction
                 }
-                // move aliens based on direction
-                if (alienDirection == Direction.LEFT)
+
+                for (int i = 0; i < row2.Count; i++)
                 {
-                    row1[i] = new Rectangle(row1[i].X - ALIEN_SPEED,
-                        row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row2[i] = new Rectangle(row2[i].X - ALIEN_SPEED,
-                        row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row3[i] = new Rectangle(row3[i].X - ALIEN_SPEED,
-                        row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row4[i] = new Rectangle(row4[i].X - ALIEN_SPEED,
-                        row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row5[i] = new Rectangle(row5[i].X - ALIEN_SPEED,
-                        row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    if (row2[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    {
+                        // change direction to left
+                        alienDirection = Direction.LEFT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    if (row2[i].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    // move aliens based on direction
+                    if (alienDirection == Direction.LEFT)
+                    {
+                        row2[i] = new Rectangle(row2[i].X - ALIEN_SPEED,
+                            row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                    else if (alienDirection == Direction.RIGHT)
+                    {
+                        row2[i] = new Rectangle(row2[i].X + ALIEN_SPEED,
+                            row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
                 }
-                else if (alienDirection == Direction.RIGHT)
+
+                for (int i = 0; i < row3.Count; i++)
                 {
-                    row1[i] = new Rectangle(row1[i].X + ALIEN_SPEED,
-                        row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row2[i] = new Rectangle(row2[i].X + ALIEN_SPEED,
-                        row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row3[i] = new Rectangle(row3[i].X + ALIEN_SPEED,
-                        row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row4[i] = new Rectangle(row4[i].X + ALIEN_SPEED,
-                        row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row5[i] = new Rectangle(row5[i].X + ALIEN_SPEED,
-                        row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    if (row3[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    {
+                        // change direction to left
+                        alienDirection = Direction.LEFT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    if (row3[i].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    // move aliens based on direction
+                    if (alienDirection == Direction.LEFT)
+                    {
+                        row3[i] = new Rectangle(row3[i].X - ALIEN_SPEED,
+                            row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                    else if (alienDirection == Direction.RIGHT)
+                    {
+                        row3[i] = new Rectangle(row3[i].X + ALIEN_SPEED,
+                            row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
                 }
-                // check to see if they have to move down
-                // change direction
+
+                for (int i = 0; i < row4.Count; i++)
+                {
+                    if (row4[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    {
+                        // change direction to left
+                        alienDirection = Direction.LEFT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    if (row4[i].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    // move aliens based on direction
+                    if (alienDirection == Direction.LEFT)
+                    {
+                        row4[i] = new Rectangle(row4[i].X - ALIEN_SPEED,
+                            row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                    else if (alienDirection == Direction.RIGHT)
+                    {
+                        row4[i] = new Rectangle(row4[i].X + ALIEN_SPEED,
+                            row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                }
+
+                for (int i = 0; i < row5.Count; i++)
+                {
+                    if (row5[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    {
+                        // change direction to left
+                        alienDirection = Direction.LEFT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    if (row5[i].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                    // move aliens based on direction
+                    if (alienDirection == Direction.LEFT)
+                    {
+                        row5[i] = new Rectangle(row5[i].X - ALIEN_SPEED,
+                            row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                    else if (alienDirection == Direction.RIGHT)
+                    {
+                        row5[i] = new Rectangle(row5[i].X + ALIEN_SPEED,
+                            row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+                }
+                // move all aliens down
+                if (alienMovedown)
+                {
+                    for (int i = 0; i < row1.Count; i++)
+                    {
+                        row1[i] = new Rectangle(row1[i].X,
+                            row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+
+                    }
+
+                    for (int i = 0; i < row2.Count; i++)
+                    {
+                        row2[i] = new Rectangle(row2[i].X,
+                            row2[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+
+                    for (int i = 0; i < row3.Count; i++)
+                    {
+                        row3[i] = new Rectangle(row3[i].X,
+                            row3[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);                        
+                    }
+
+                    for (int i = 0; i < row4.Count; i++)
+                    {
+                        row4[i] = new Rectangle(row4[i].X,
+                            row4[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+
+                    for (int i = 0; i < row5.Count; i++)
+                    {                         
+                        row5[i] = new Rectangle(row5[i].X,
+                            row5[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                    }
+
+                    alienMovedown = false;
+                }
+            }
+            #endregion
+
+            #region Monster Shooting
+
+            if (randNum.Next(1, 11) >= 5)
+            {
+                // generate a shot
+                if (row5.Count != 0)
+                {
+                    int range = row5.Count;
+                    int randAlien = randNum.Next(0, range);
+
+                    alienBulletRect.X = row5[randAlien].X;
+                    alienBulletRect.Y = row5[randAlien].Y + ALIEN_HEIGHT;
+                    bulletRect.Width = 1;
+                    bulletRect.Height = 6;
+
+                    alienBulletOnScreen = true;
+                }
             }
 
-
-            // move all aliens down
-            if (alienMovedown)
+            if (alienBulletOnScreen)
             {
-                for (int i = 0; i < row1.Capacity; i++)
-                {
-                    row1[i] = new Rectangle(row1[i].X, 
-                        row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row2[i] = new Rectangle(row2[i].X,
-                        row2[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row3[i] = new Rectangle(row3[i].X,
-                        row3[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row4[i] = new Rectangle(row4[i].X,
-                        row4[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    row5[i] = new Rectangle(row5[i].X,
-                        row5[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                }
-
-                alienMovedown = false;
+                alienBulletRect.Y += BULLET_SPEED;
             }
 
             #endregion
@@ -394,83 +548,87 @@ namespace GameTemplate.Screens
                 }
 
                 // alien collision
-                for (int i = 0; i < row1.Capacity; i++)
+                foreach (Rectangle alien in row1)
                 {
-                    if (bulletRect.IntersectsWith(row1[i]))
+                    if (alien.IntersectsWith(bulletRect))
                     {
-                        // show explosion
-                        
-                        row1.Remove(row1[i]);
+                        // play explosion
+                        //alienHit.Play();
 
-                        // get rid of bullet
-                        bulletOnScreen = false;
-                        
-                        playerBullet.Stop();
-                    }               
-                }
-
-                for (int i = 0; i < row2.Capacity; i++)
-                {
-                    if (bulletRect.IntersectsWith(row2[i]))
-                    {
-                        row2.Remove(row2[i]);
+                        row1.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
 
                         playerBullet.Stop();
+                        break;
                     }
                 }
 
-                for (int i = 0; i < row3.Capacity; i++)
+                foreach (Rectangle alien in row2)
                 {
-                    if (bulletRect.IntersectsWith(row3[i]))
+                    if (alien.IntersectsWith(bulletRect))
                     {
-                        row3.Remove(row3[i]);
+                        // play explosion
+                        //alienHit.Play();
+
+                        row2.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
 
                         playerBullet.Stop();
+                        break;
                     }
                 }
 
-                for (int i = 0; i < row4.Capacity; i++)
+                foreach (Rectangle alien in row3)
                 {
-                    if (bulletRect.IntersectsWith(row4[i]))
+                    if (alien.IntersectsWith(bulletRect))
                     {
-                        row4.Remove(row4[i]);
+                        // play explosion
+                        //alienHit.Play();
+
+                        row3.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
 
                         playerBullet.Stop();
+                        break;
                     }
                 }
 
-                for (int i = 0; i < row5.Capacity; i++)
+                foreach (Rectangle alien in row4)
                 {
-                    if (bulletRect.IntersectsWith(row5[i]))
+                    if (alien.IntersectsWith(bulletRect))
                     {
-                        row5.Remove(row5[i]);
+                        // play explosion
+                        //alienHit.Play();
+                        row4.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
 
                         playerBullet.Stop();
+                        break;
                     }
                 }
 
-                for (int i = 0; i < row1.Capacity; i++)
+                foreach (Rectangle alien in row5)
                 {
-                    if (bulletRect.IntersectsWith(row1[i]))
+                    if (alien.IntersectsWith(bulletRect))
                     {
-                        row1.Remove(row1[i]);
+                        // play explosion
+                        //alienHit.Play();
+
+                        row5.Remove(alien);
 
                         // get rid of bullet
                         bulletOnScreen = false;
 
                         playerBullet.Stop();
+                        break;
                     }
                 }
             }
@@ -607,10 +765,14 @@ namespace GameTemplate.Screens
             {
                 e.Graphics.DrawImage(bullet, bulletRect);
             }
+            if (alienBulletOnScreen)
+            {
+                e.Graphics.DrawImage(bullet, alienBulletRect);
+            }
 
             foreach (Rectangle alien in row1)
             {
-                e.Graphics.DrawImage(alien1, alien);
+                e.Graphics.DrawImage(alien3, alien);
             }
             foreach (Rectangle alien in row2)
             {
@@ -618,15 +780,15 @@ namespace GameTemplate.Screens
             }
             foreach (Rectangle alien in row3)
             {
-                e.Graphics.DrawImage(alien3, alien);
+                e.Graphics.DrawImage(alien2, alien);
             }
             foreach (Rectangle alien in row4)
             {
-                e.Graphics.DrawImage(alien3, alien);
+                e.Graphics.DrawImage(alien1, alien);
             }
             foreach (Rectangle alien in row5)
             {
-                e.Graphics.DrawImage(alien3, alien);
+                e.Graphics.DrawImage(alien1, alien);
             }
 
             if (alienKilled)
