@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
 using GameTemplate.Dialogs;
+using System.Threading;
 
 namespace GameTemplate.Screens
 {
@@ -20,6 +21,8 @@ namespace GameTemplate.Screens
         bool bulletOnScreen = false, alienBulletOnScreen = false;
         bool leftKeyDown, shootKeyDown, rightKeyDown, exit;
         bool alienKilled = false;
+
+        int bulletsOnScreen = 0;
 
         enum Direction
         {
@@ -43,7 +46,8 @@ namespace GameTemplate.Screens
              barrier1, barrier2, barrier3, barrier4, bullet;
         // we can change the barrier image depending on the health
 
-        Rectangle bulletRect, alienBulletRect, playerRect, barrier1Rect,
+        Rectangle bulletRect, alienBulletRect, alienBulletRect2,
+            alienBulletRect3, playerRect, barrier1Rect,
             barrier2Rect, barrier3Rect, barrier4Rect;
 
         List<Rectangle> row1 = new List<Rectangle>(11);
@@ -61,14 +65,17 @@ namespace GameTemplate.Screens
         const int ALIEN2_SCORE = 20;
         const int ALIEN3_SCORE = 40;
         const int BULLET_SPEED = 10;
+        const int ALIEN_BULLET_SPEED = 7;
         const int PLAYER_SPEED = 4;
-        const int ALIEN_SPEED = 1;
+        const int ALIEN_SPEED = 2;
         const int ALIEN_DOWNSPEED = 10;
         const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
-        const int MOVEMENT_TIME = 512;
+        const int MOVEMENT_TIME = 64;
+        const int ALIEN_SHOOT_TIME = 1024;
 
         int elapsed = 0;
+        int timeSinceLastShot = 0;
 
         public GameScreen()
         {
@@ -78,9 +85,9 @@ namespace GameTemplate.Screens
             solidBrush = new SolidBrush(Color.White);
             greenBrush = new SolidBrush(Color.Green);
 
-            titleFont = new Font("Consolas", 36, FontStyle.Regular);
-            menuFont = new Font("Consolas", 24, FontStyle.Regular);
-            subFont = new Font("Consolas", 12, FontStyle.Regular);
+            titleFont = new Font("Verdana", 36, FontStyle.Regular);
+            menuFont = new Font("Verdana", 24, FontStyle.Regular);
+            subFont = new Font("Verdana", 24, FontStyle.Regular);
 
             // set up rectangles
             playerRect.X = 20;
@@ -112,6 +119,14 @@ namespace GameTemplate.Screens
             bulletRect.Y = 0;
             bulletRect.Width = 1;
             bulletRect.Height = 6;
+
+            alienBulletRect.X = 0;
+            alienBulletRect.Y = 0;
+            alienBulletRect.Width = 1;
+            alienBulletRect.Height = 6;
+
+            alienBulletRect2 = alienBulletRect;
+            alienBulletRect3 = alienBulletRect;
 
             // load sounds
             playerBullet = new SoundPlayer(Properties.Resources.player_shoot);
@@ -151,6 +166,11 @@ namespace GameTemplate.Screens
                 row4.Add(tempRect4);
                 row5.Add(tempRect5);
             }
+        }
+
+        public void MoveAliensDown()
+        {
+
         }
 
         #region required global values - DO NOT CHANGE
@@ -286,15 +306,11 @@ namespace GameTemplate.Screens
 
 
             #region monster movements - TO BE COMPLETED
-
-
-
             elapsed += gameTimer.Interval;
 
             if (elapsed >= MOVEMENT_TIME)
             {
                 elapsed = 0;
-
                 for (int i = 0; i < row1.Count; i++)
                 {
                     if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
@@ -358,7 +374,6 @@ namespace GameTemplate.Screens
                             row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                     }
                 }
-
 
                 for (int i = 0; i < row3.Count; i++)
                 {
@@ -452,6 +467,7 @@ namespace GameTemplate.Screens
                             row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                     }
                 }
+
                 // move all aliens down
                 if (alienMovedown)
                 {
@@ -506,27 +522,32 @@ namespace GameTemplate.Screens
 
             #region Monster Shooting
 
-            if (randNum.Next(1, 11) >= 5)
+            timeSinceLastShot += gameTimer.Interval;
+            if (timeSinceLastShot >= ALIEN_SHOOT_TIME)//randNum.Next(1, 11) >= 5)
             {
+                timeSinceLastShot = 0;
+
                 // generate a shot
-                if (row5.Count != 0)
+                if (row5.Count != 0 && !alienBulletOnScreen)
                 {
                     int range = row5.Count;
                     int randAlien = randNum.Next(0, range);
 
                     alienBulletRect.X = row5[randAlien].X;
                     alienBulletRect.Y = row5[randAlien].Y + ALIEN_HEIGHT;
-                    bulletRect.Width = 1;
-                    bulletRect.Height = 6;
-
+                    alienBulletRect.Width = 1;
                     alienBulletOnScreen = true;
+
                 }
             }
 
             if (alienBulletOnScreen)
             {
-                alienBulletRect.Y += BULLET_SPEED;
+                alienBulletRect.Y += ALIEN_BULLET_SPEED;
             }
+
+            if (alienBulletRect.Y >= ScreenControl.controlHeight)
+                alienBulletOnScreen = false;
 
             #endregion
 
@@ -579,6 +600,8 @@ namespace GameTemplate.Screens
 
                         row1.Remove(alien);
 
+                        score += ALIEN3_SCORE;
+
                         // get rid of bullet
                         bulletOnScreen = false;
                         break;
@@ -595,6 +618,8 @@ namespace GameTemplate.Screens
                         alienHit.Play();
 
                         row2.Remove(alien);
+
+                        score += ALIEN2_SCORE;
 
                         // get rid of bullet
                         bulletOnScreen = false;
@@ -613,6 +638,8 @@ namespace GameTemplate.Screens
 
                         row3.Remove(alien);
 
+                        score += ALIEN2_SCORE;
+
                         // get rid of bullet
                         bulletOnScreen = false;
                         break;
@@ -628,6 +655,8 @@ namespace GameTemplate.Screens
                         // play explosion
                         alienHit.Play();
                         row4.Remove(alien);
+
+                        score += ALIEN1_SCORE;
 
                         // get rid of bullet
                         bulletOnScreen = false;
@@ -646,9 +675,42 @@ namespace GameTemplate.Screens
                         // play explosion
                         alienHit.Play();
 
+                        score += ALIEN1_SCORE;
+
                         row5.Remove(alien);
                         break;
                     }
+                }
+            }
+            if (alienBulletOnScreen)
+            {
+                if (alienBulletRect.IntersectsWith(barrier1Rect))
+                {
+                    barrier1health--;
+                    alienBulletOnScreen = false;
+                }
+                if (alienBulletRect.IntersectsWith(barrier2Rect))
+                {
+                    barrier2health--;
+                    alienBulletOnScreen = false;
+                }
+                if (alienBulletRect.IntersectsWith(barrier3Rect))
+                {
+                    barrier3health--;
+                    alienBulletOnScreen = false;
+                }
+                if (alienBulletRect.IntersectsWith(barrier4Rect))
+                {
+                    barrier4health--;
+                    alienBulletOnScreen = false;
+                }
+                if (alienBulletRect.IntersectsWith(playerRect))
+                {
+                    lives--;
+
+//Thread.Sleep(2500);
+
+                    alienBulletOnScreen = false;
                 }
             }
 
@@ -724,9 +786,48 @@ namespace GameTemplate.Screens
             }
             #endregion
 
+            // reset game when all aliens are gone
+            if (row1.Count == 0 &&
+                row2.Count == 0 &&
+                row3.Count == 0 &&
+                row4.Count == 0 && 
+                row5.Count == 0)
+            {
+
+                resetGame();
+            }
 
             //refresh the screen, which causes the GameScreen_Paint method to run
             Refresh();
+        }
+
+        public void resetGame()
+        {
+            // add a life
+            lives++;
+
+            for (int i = 0; i < row1.Capacity; i++)
+            {
+                Rectangle tempRect = new Rectangle();
+                Rectangle tempRect2 = new Rectangle();
+                Rectangle tempRect3 = new Rectangle();
+                Rectangle tempRect4 = new Rectangle();
+                Rectangle tempRect5 = new Rectangle();
+
+                tempRect = new Rectangle(100 + (45 * i), 100, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect2 = new Rectangle(100 + (45 * i), 150, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect3 = new Rectangle(100 + (45 * i), 200, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect4 = new Rectangle(100 + (45 * i), 250, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect5 = new Rectangle(100 + (45 * i), 300, ALIEN_WIDTH, ALIEN_HEIGHT);
+
+                row1.Add(tempRect);
+                row2.Add(tempRect2);
+                row3.Add(tempRect3);
+                row4.Add(tempRect4);
+                row5.Add(tempRect5);
+            }
+
+            Thread.Sleep(2500);
         }
 
         /// <summary>
