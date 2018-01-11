@@ -202,9 +202,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap explosion {
+        internal static System.Drawing.Bitmap explosionBig {
             get {
-                object obj = ResourceManager.GetObject("explosion", resourceCulture);
+                object obj = ResourceManager.GetObject("explosionBig", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -240,9 +240,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap playerExplosion {
+        internal static System.Drawing.Bitmap playerExplosionBig {
             get {
-                object obj = ResourceManager.GetObject("playerExplosion", resourceCulture);
+                object obj = ResourceManager.GetObject("playerExplosionBig", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

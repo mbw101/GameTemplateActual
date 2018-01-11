@@ -140,13 +140,7 @@
     <None Include="Resources\alienRandom.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\explosion.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\player.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\playerExplosion.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\invader_shoot.wav" />
@@ -201,6 +195,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\alien40altBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\explosionBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\playerExplosionBig.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

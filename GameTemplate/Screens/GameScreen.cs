@@ -18,15 +18,14 @@ namespace GameTemplate.Screens
         int lives = 3, score = 0;
         int barrier1health = 15, barrier2health = 15,
             barrier3health = 15, barrier4health = 15;
-        bool bulletOnScreen = false;
+        bool bulletOnScreen = false, playerHit = false;
         bool leftKeyDown, shootKeyDown, rightKeyDown, exit;
         bool alienKilled = false;
 
         enum Direction
         {
             LEFT,
-            RIGHT,
-            DOWN
+            RIGHT
         }
 
         Random randNum = new Random();
@@ -41,7 +40,7 @@ namespace GameTemplate.Screens
         SolidBrush solidBrush, greenBrush;
         Pen pen;
         Font titleFont, menuFont, subFont;
-        Image alien1, alien2, alien3, ufo, player,
+        Image alien1, alien2, alien3, ufo, player, playerExplosion,
              barrier1, barrier2, barrier3, barrier4, bullet;
         // we can change the barrier image depending on the health
 
@@ -57,7 +56,7 @@ namespace GameTemplate.Screens
         List<Rectangle> bullets = new List<Rectangle>(3);
 
         // sounds and images
-        SoundPlayer playerBullet, alienBullet, alienHit, playerHit,
+        SoundPlayer playerBullet, alienBullet, alienHit, playerHitSound,
             ufoHit, ufoSound;
 
         // constants
@@ -131,6 +130,7 @@ namespace GameTemplate.Screens
 
             bullet = new Bitmap(Properties.Resources.bullet);
             player = new Bitmap(Properties.Resources.playerBig);
+            playerExplosion = new Bitmap(Properties.Resources.playerExplosionBig);
             alien1 = new Bitmap(Properties.Resources.alien10Big);
             alien2 = new Bitmap(Properties.Resources.alien20Big);
             alien3 = new Bitmap(Properties.Resources.alien40Big);
@@ -148,9 +148,9 @@ namespace GameTemplate.Screens
                 Rectangle tempRect4 = new Rectangle();
                 Rectangle tempRect5 = new Rectangle();
 
-                tempRect = new Rectangle(100 + (45 * i), 100, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect2 = new Rectangle(100 + (45 * i), 150, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect3 = new Rectangle(100 + (45 * i), 200, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect = new Rectangle(102 + (45 * i), 100, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect2 = new Rectangle(102 + (45 * i), 150, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect3 = new Rectangle(102 + (45 * i), 200, ALIEN_WIDTH, ALIEN_HEIGHT);
                 tempRect4 = new Rectangle(100 + (45 * i), 250, ALIEN_WIDTH, ALIEN_HEIGHT);
                 tempRect5 = new Rectangle(100 + (45 * i), 300, ALIEN_WIDTH, ALIEN_HEIGHT);
 
@@ -164,7 +164,54 @@ namespace GameTemplate.Screens
 
         public void MoveAliensDown()
         {
+            if (alienMovedown)
+            {
+                for (int i = 0; i < row1.Count(); i++)
+                {
+                    row1[i] = new Rectangle(row1[i].X,
+                        row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
 
+                for (int i = 0; i < row2.Count(); i++)
+                {
+                    row2[i] = new Rectangle(row2[i].X,
+                        row2[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
+
+                for (int i = 0; i < row3.Count(); i++)
+                {
+                    row3[i] = new Rectangle(row3[i].X,
+                        row3[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
+
+                for (int i = 0; i < row4.Count(); i++)
+                {
+                    row4[i] = new Rectangle(row4[i].X,
+                        row4[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
+
+                for (int i = 0; i < row5.Count(); i++)
+                {
+                    row5[i] = new Rectangle(row5[i].X,
+                        row5[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+                }
+
+                alienMovedown = false;
+            }
+        }
+
+        public void CheckBounds()
+        {
+            if (row1[0].X <= 0 || row2[0].X <= 0
+                        || row3[0].X <= 0 || row4[0].X <= 0
+                        || row5[0].X <= 0)
+            {
+                // change direction to right
+                alienDirection = Direction.RIGHT;
+
+                // move down
+                alienMovedown = true;
+            }
         }
 
         #region required global values - DO NOT CHANGE
@@ -295,6 +342,16 @@ namespace GameTemplate.Screens
                 bulletOnScreen = false;
             }
 
+            if (playerHit)
+            {
+                Thread.Sleep(100);
+
+                bullets.Clear();
+
+                playerHit = false;
+
+                playerRect.X = 20;
+            }
 
             #endregion
 
@@ -305,24 +362,9 @@ namespace GameTemplate.Screens
             if (elapsed >= MOVEMENT_TIME)
             {
                 elapsed = 0;
-                for (int i = 0; i < row1.Count; i++)
+
+                for (int i = 0; i < row1.Count(); i++)
                 {
-                    if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    {
-                        // change direction to left
-                        alienDirection = Direction.DOWN;
-
-                        // move down
-                        alienMovedown = true;
-                    }
-                    if (row1[i].X <= 0)
-                    {
-                        // change direction to right
-                        alienDirection = Direction.DOWN;
-
-                        // move down
-                        alienMovedown = true;
-                    }
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
@@ -334,28 +376,10 @@ namespace GameTemplate.Screens
                         row1[i] = new Rectangle(row1[i].X + ALIEN_SPEED,
                             row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                     }
-                    // check to see if they have to move down
-                    // change direction
                 }
 
-                for (int i = 0; i < row2.Count; i++)
+                for (int i = 0; i < row2.Count(); i++)
                 {
-                    if (row2[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
-                    if (row2[i].X <= 0)
-                    {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
@@ -369,24 +393,8 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                for (int i = 0; i < row3.Count; i++)
+                for (int i = 0; i < row3.Count(); i++)
                 {
-                    if (row3[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
-                    if (row3[i].X <= 0)
-                    {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
@@ -401,24 +409,8 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                for (int i = 0; i < row4.Count; i++)
+                for (int i = 0; i < row4.Count(); i++)
                 {
-                    if (row4[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
-                    if (row4[i].X <= 0)
-                    {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
@@ -432,24 +424,8 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                for (int i = 0; i < row5.Count; i++)
+                for (int i = 0; i < row5.Count(); i++)
                 {
-                    if (row5[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
-                    if (row5[i].X <= 0)
-                    {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
-
-                        // move down
-                        alienMovedown = true;
-                    }
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
@@ -463,54 +439,35 @@ namespace GameTemplate.Screens
                     }
                 }
 
-                // move all aliens down
-                if (alienMovedown)
+                if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                    || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                    || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                    || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                    || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
                 {
-                    for (int i = 0; i < row1.Count; i++)
-                    {
-                        row1[i] = new Rectangle(row1[i].X,
-                            row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);     
-                    }
+                    // change direction to left
+                    alienDirection = Direction.LEFT;
 
-                    for (int i = 0; i < row2.Count; i++)
-                    {
-                        row2[i] = new Rectangle(row2[i].X,
-                            row2[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    }
-
-                    for (int i = 0; i < row3.Count; i++)
-                    {
-                        row3[i] = new Rectangle(row3[i].X,
-                            row3[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    }
-
-                    for (int i = 0; i < row4.Count; i++)
-                    {
-                        row4[i] = new Rectangle(row4[i].X,
-                            row4[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    }
-
-                    for (int i = 0; i < row5.Count; i++)
-                    {
-                        row5[i] = new Rectangle(row5[i].X,
-                            row5[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-                    }
-
-                    alienMovedown = false;
-
-                    //for (int i = 0; i < row1.Count; i++)
-                    //{
-                    //    if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                    //            || row2[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    //    {
-                    //        alienDirection = Direction.LEFT;
-                    //    }
-                    //    else
-                    //    {
-                    //        alienDirection = Direction.RIGHT;
-                    //    }
-                    //}
+                    // move down
+                    alienMovedown = true;
                 }
+
+                // make sure no rows are empty
+
+                // check bounds
+                if (row1[0].X <= 0 || row2[0].X <= 0
+                    || row3[0].X <= 0 || row4[0].X <= 0
+                    || row5[0].X <= 0)
+                {
+                    // change direction to right
+                    alienDirection = Direction.RIGHT;
+
+                    // move down
+                    alienMovedown = true;
+                }
+
+                // move all aliens down
+                MoveAliensDown();
             }
 
             //alienAnimationCounter += gameTimer.Interval;
@@ -767,25 +724,25 @@ namespace GameTemplate.Screens
             {
                 for (int i = 0; i < bullets.Count(); i++)
                 {
-                    if (bullets[i].IntersectsWith(barrier1Rect))
+                    if (bullets[i].IntersectsWith(barrier1Rect) && barrier1health >= 1)
                     {
                         barrier1health--;
                         bullets.Remove(bullets[i]);
                         break;
                     }
-                    if (bullets[i].IntersectsWith(barrier2Rect))
+                    if (bullets[i].IntersectsWith(barrier2Rect) && barrier2health >= 1)
                     {
                         barrier2health--;
                         bullets.Remove(bullets[i]);
                         break;
                     }
-                    if (bullets[i].IntersectsWith(barrier3Rect))
+                    if (bullets[i].IntersectsWith(barrier3Rect) && barrier3health >= 1)
                     {
                         barrier3health--;
                         bullets.Remove(bullets[i]);
                         break;
                     }
-                    if (bullets[i].IntersectsWith(barrier4Rect))
+                    if (bullets[i].IntersectsWith(barrier4Rect) && barrier4health >= 1)
                     {
                         barrier4health--;
                         bullets.Remove(bullets[i]);
@@ -795,6 +752,7 @@ namespace GameTemplate.Screens
                     {
                         lives--;
                         bullets.Remove(bullets[i]);
+                        playerHit = true;
                         break;
                     }
                 }
@@ -946,8 +904,15 @@ namespace GameTemplate.Screens
             e.Graphics.Clear(Color.Black);
 
             //draw rectangle to screen
-            e.Graphics.DrawImage(player, playerRect.X, playerRect.Y,
-                playerRect.Width, playerRect.Height);
+            if (!playerHit)
+            {
+                e.Graphics.DrawImage(player, playerRect.X, playerRect.Y,
+                    playerRect.Width, playerRect.Height);
+            }
+            else
+            {
+                e.Graphics.DrawImage(playerExplosion, playerRect);
+            }
 
             e.Graphics.DrawString("Score: " + score, subFont,
                 solidBrush, 25, 25);
