@@ -25,7 +25,8 @@ namespace GameTemplate.Screens
         enum Direction
         {
             LEFT,
-            RIGHT
+            RIGHT,
+            DOWN
         }
 
         Random randNum = new Random();
@@ -67,14 +68,15 @@ namespace GameTemplate.Screens
         const int ALIEN_BULLET_SPEED = 7;
         const int MAX_ALIEN_BULLETS = 3;
         const int PLAYER_SPEED = 4;
-        const int ALIEN_SPEED = 2;
+        const int ALIEN_SPEED = 6; //changed 
         const int ALIEN_DOWNSPEED = 10;
         const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
-        const int MOVEMENT_TIME = 64;
+        const int MOVEMENT_TIME = 500; //changed
         const int ALIEN_SHOOT_TIME = 200; // 1024
 
         int elapsed = 0;
+        int alienAnimationCounter = 0;
         int timeSinceLastShot = 0;
 
         public GameScreen()
@@ -308,7 +310,7 @@ namespace GameTemplate.Screens
                     if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
                     {
                         // change direction to left
-                        alienDirection = Direction.LEFT;
+                        alienDirection = Direction.DOWN;
 
                         // move down
                         alienMovedown = true;
@@ -316,7 +318,7 @@ namespace GameTemplate.Screens
                     if (row1[i].X <= 0)
                     {
                         // change direction to right
-                        alienDirection = Direction.RIGHT;
+                        alienDirection = Direction.DOWN;
 
                         // move down
                         alienMovedown = true;
@@ -390,6 +392,7 @@ namespace GameTemplate.Screens
                     {
                         row3[i] = new Rectangle(row3[i].X - ALIEN_SPEED,
                             row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        //alien2 = new Bitmap(Properties.Resources.alien20altBig);
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
@@ -466,8 +469,7 @@ namespace GameTemplate.Screens
                     for (int i = 0; i < row1.Count; i++)
                     {
                         row1[i] = new Rectangle(row1[i].X,
-                            row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-
+                            row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);     
                     }
 
                     for (int i = 0; i < row2.Count; i++)
@@ -495,21 +497,39 @@ namespace GameTemplate.Screens
                     }
 
                     alienMovedown = false;
+
+                    //for (int i = 0; i < row1.Count; i++)
+                    //{
+                    //    if (row1[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                    //            || row2[i].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    //    {
+                    //        alienDirection = Direction.LEFT;
+                    //    }
+                    //    else
+                    //    {
+                    //        alienDirection = Direction.RIGHT;
+                    //    }
+                    //}
                 }
             }
 
-            //if (elapsed <= MOVEMENT_TIME / 2)
-            //{
-            //    alien1 = new Bitmap(Properties.Resources.alien10Big);
-            //    alien2 = new Bitmap(Properties.Resources.alien20Big);
-            //    alien3 = new Bitmap(Properties.Resources.alien40Big);
-            //}
-            //else if (elapsed >= MOVEMENT_TIME / 2)
-            //{
-            //    alien1 = new Bitmap(Properties.Resources.alien10altBig);
-            //    alien2 = new Bitmap(Properties.Resources.alien20altBig);
-            //    alien3 = new Bitmap(Properties.Resources.alien40altBig);
-            //}
+            //alienAnimationCounter += gameTimer.Interval;
+            if (elapsed == 16 && alienAnimationCounter == 0)
+            {
+                alien1 = new Bitmap(Properties.Resources.alien10Big);
+                alien2 = new Bitmap(Properties.Resources.alien20Big);
+                alien3 = new Bitmap(Properties.Resources.alien40Big);
+
+                alienAnimationCounter++;
+            }
+            else if (elapsed == 16 && alienAnimationCounter == 1)
+            {
+                alien1 = new Bitmap(Properties.Resources.alien10altBig);
+                alien2 = new Bitmap(Properties.Resources.alien20altBig);
+                alien3 = new Bitmap(Properties.Resources.alien40altBig);
+
+                alienAnimationCounter = 0;
+            }
             #endregion
 
             #region Monster Shooting
