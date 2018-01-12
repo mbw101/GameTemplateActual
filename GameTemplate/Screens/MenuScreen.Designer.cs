@@ -96,7 +96,7 @@
             this.creditLabel.Name = "creditLabel";
             this.creditLabel.Size = new System.Drawing.Size(457, 25);
             this.creditLabel.TabIndex = 11;
-            this.creditLabel.Text = "Made by Avery Carins and Malcolm Wright";
+            this.creditLabel.Text = "Made by Avery Cairns and Malcolm Wright";
             // 
             // MenuScreen
             // 

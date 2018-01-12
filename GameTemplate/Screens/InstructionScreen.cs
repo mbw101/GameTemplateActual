@@ -33,7 +33,15 @@ namespace GameTemplate.Screens
             {
                 if (c == instructionLabel)
                 {
-                    c.Location = new Point(50, 50);
+                    c.Location = new Point(ScreenControl.controlWidth / 2 - c.Width / 2, 60);
+                }
+                if (c == instructionLabel2)
+                {
+                    c.Location = new Point(ScreenControl.controlWidth / 2 - c.Width / 2, 100);
+                }
+                if (c == instructionLabel3)
+                {
+                    c.Location = new Point(ScreenControl.controlWidth / 2 - c.Width / 2, 140);
                 }
                 if (c == exitButton)
                 {

@@ -72,7 +72,8 @@ namespace GameTemplate.Screens
         const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
         const int MOVEMENT_TIME = 500; //changed
-        const int ALIEN_SHOOT_TIME = 200; // 1024
+        int ALIEN_SHOOT_TIME = 200; // 1024
+        const int ALIEN_SLOW_SHOOT_TIME = 400;
 
         int elapsed = 0;
         int alienAnimationCounter = 0;
@@ -197,20 +198,6 @@ namespace GameTemplate.Screens
                 }
 
                 alienMovedown = false;
-            }
-        }
-
-        public void CheckBounds()
-        {
-            if (row1[0].X <= 0 || row2[0].X <= 0
-                        || row3[0].X <= 0 || row4[0].X <= 0
-                        || row5[0].X <= 0)
-            {
-                // change direction to right
-                alienDirection = Direction.RIGHT;
-
-                // move down
-                alienMovedown = true;
             }
         }
 
@@ -344,7 +331,7 @@ namespace GameTemplate.Screens
 
             if (playerHit)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
 
                 bullets.Clear();
 
@@ -454,18 +441,69 @@ namespace GameTemplate.Screens
 
                 // make sure no rows are empty
 
-                // check bounds
-                if (row1[0].X <= 0 || row2[0].X <= 0
-                    || row3[0].X <= 0 || row4[0].X <= 0
-                    || row5[0].X <= 0)
+                if (row5.Count != 0)
                 {
-                    // change direction to right
-                    alienDirection = Direction.RIGHT;
+                    // check bounds
+                    if (row1[0].X <= 0 || row2[0].X <= 0
+                        || row3[0].X <= 0 || row4[0].X <= 0
+                        || row5[0].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
 
-                    // move down
-                    alienMovedown = true;
+                        // move down
+                        alienMovedown = true;
+                    }
                 }
+                else if (row4.Count != 0)
+                {
+                    // check bounds
+                    if (row1[0].X <= 0 || row2[0].X <= 0
+                        || row3[0].X <= 0 || row4[0].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
 
+                        // move down
+                        alienMovedown = true;
+                    }
+                }
+                else if (row3.Count != 0)
+                {
+                    // check bounds
+                    if (row1[0].X <= 0 || row2[0].X <= 0 || row3[0].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                }
+                else if (row2.Count != 0)
+                {
+                    // check bounds
+                    if (row1[0].X <= 0 || row2[0].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                }
+                else if (row1.Count != 0)
+                {
+                    // check bounds
+                    if (row1[0].X <= 0)
+                    {
+                        // change direction to right
+                        alienDirection = Direction.RIGHT;
+
+                        // move down
+                        alienMovedown = true;
+                    }
+                }
                 // move all aliens down
                 MoveAliensDown();
             }
@@ -492,7 +530,7 @@ namespace GameTemplate.Screens
             #region Monster Shooting
 
             timeSinceLastShot += gameTimer.Interval;
-            if (timeSinceLastShot >= ALIEN_SHOOT_TIME)//randNum.Next(1, 11) >= 5)
+            if (timeSinceLastShot >= ALIEN_SHOOT_TIME)
             {
                 timeSinceLastShot = 0;
 
@@ -504,6 +542,15 @@ namespace GameTemplate.Screens
                     int randAlien = randNum.Next(0, range);
 
                     Rectangle tempBullet = new Rectangle();
+
+                    if (row5.Count <= 3)
+                    {
+                        ALIEN_SHOOT_TIME *= 2;
+                    }
+                    else
+                    {
+                        ALIEN_SHOOT_TIME /= 2;
+                    }
 
                     tempBullet.X = row5[randAlien].X;
                     tempBullet.Y = row5[randAlien].Y + ALIEN_HEIGHT;
