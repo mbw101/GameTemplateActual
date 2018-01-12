@@ -69,7 +69,9 @@ namespace GameTemplate
                 case "ScoreScreen":
                     ns = new ScoreScreen();
                     break;
-
+                case "GameOverScreen":
+                    ns = new GameOverScreen();
+                    break;
             }
 
             ns.Size = new Size(controlWidth, controlHeight);
