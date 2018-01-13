@@ -17,9 +17,10 @@ namespace GameTemplate.Screens
     {
         public int lives = 3;
         public static int score = 0;
-        int barrier1health = 15, barrier2health = 15,
-            barrier3health = 15, barrier4health = 15;
-        bool bulletOnScreen = false, playerHit = false;
+        int barrier1health = 30, barrier2health = 30,
+            barrier3health = 30, barrier4health = 30;
+        bool bulletOnScreen = false, playerHit = false,
+            ufoOnScreen = false;
         bool leftKeyDown, shootKeyDown, rightKeyDown, exit;
         bool alienKilled = false;
 
@@ -47,7 +48,7 @@ namespace GameTemplate.Screens
         // we can change the barrier image depending on the health
 
         Rectangle bulletRect, playerRect, barrier1Rect,
-            barrier2Rect, barrier3Rect, barrier4Rect;
+            barrier2Rect, barrier3Rect, barrier4Rect, ufoRect;
 
         List<Rectangle> row1 = new List<Rectangle>(11);
         List<Rectangle> row2 = new List<Rectangle>(11);
@@ -73,14 +74,21 @@ namespace GameTemplate.Screens
         const int ALIEN_DOWNSPEED = 10;
         const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
+        const int UFO_WIDTH = 48;
+        const int UFO_HEIGHT = 21;
+        const int UFO_SPEED = 8; // 8
+        const int UFO_WAIT_TIME = 350;
+        const int UFO_SCORE = 100;
         const int MOVEMENT_TIME = 500; //changed
         const int ALIEN_SHOOT_TIME = 400; // 200
         const int SLOW_ALIEN_SHOOT_TIME = 400;
         const int ALIEN_SLOW_SHOOT_TIME = 400;
 
+        // counters
         int elapsed = 0;
         int alienAnimationCounter = 0;
         int timeSinceLastShot = 0;
+        int ufoCounter = 0;
 
         public GameScreen()
         {
@@ -125,6 +133,11 @@ namespace GameTemplate.Screens
             bulletRect.Width = 1;
             bulletRect.Height = 6;
 
+            ufoRect.X = 0;
+            ufoRect.Y = 0;
+            ufoRect.Width = UFO_WIDTH;
+            ufoRect.Height = UFO_HEIGHT;
+
             // load sounds
             playerBullet = new SoundPlayer(Properties.Resources.player_shoot);
             ufoSound = new SoundPlayer(Properties.Resources.ufo_onscreen);
@@ -138,7 +151,7 @@ namespace GameTemplate.Screens
             alien1 = new Bitmap(Properties.Resources.alien10Big);
             alien2 = new Bitmap(Properties.Resources.alien20Big);
             alien3 = new Bitmap(Properties.Resources.alien40Big);
-            ufo = new Bitmap(Properties.Resources.alienRandom);
+            ufo = new Bitmap(Properties.Resources.alienRandomBig);
             barrier1 = new Bitmap(Properties.Resources.coverFullBig);
             barrier2 = barrier1;
             barrier3 = barrier1;
@@ -823,12 +836,33 @@ namespace GameTemplate.Screens
                         break;
                     }
                 }
+
+                if (ufoOnScreen)
+                {
+                    if (bulletRect.IntersectsWith(ufoRect))
+                    {
+                        // stop sound
+                        ufoSound.Stop();
+
+                        ufoHit.Play();
+
+                        // generate a random score
+                        int scoreMultiplier = randGen.Next(1, 4);
+
+                        score += UFO_SCORE * scoreMultiplier;
+
+                        // get rid of ufo and player bullet
+                        ufoOnScreen = false;
+                        bulletOnScreen = false;
+                    }
+                }
             }
 
             // check to see if there are any
             // alien bullets on the screen
             if (bullets.Count() >= 1)
             {
+                // see if any of them intersect with the barriers
                 for (int i = 0; i < bullets.Count(); i++)
                 {
                     if (bullets[i].IntersectsWith(barrier1Rect) && barrier1health >= 1)
@@ -855,8 +889,16 @@ namespace GameTemplate.Screens
                         bullets.Remove(bullets[i]);
                         break;
                     }
+
+                    // check to see if they collide with the player
                     if (bullets[i].IntersectsWith(playerRect))
                     {
+                        if (ufoOnScreen)
+                        {
+                            ufoOnScreen = false;
+                            ufoSound.Stop();
+                        }
+
                         if (lives == 0)
                         {
                             gameTimer.Enabled = false;
@@ -878,72 +920,109 @@ namespace GameTemplate.Screens
             #endregion
 
             #region barrier logic
-            if (barrier1health == 12)
+            if (barrier1health == 24)
             {
                 barrier1 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier1health == 9)
+            else if (barrier1health == 18)
             {
                 barrier1 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier1health == 6)
+            else if (barrier1health == 12)
             {
                 barrier1 = new Bitmap(Properties.Resources.coverDmg3Big);
             }
-            else if (barrier1health == 3)
+            else if (barrier1health == 6)
             {
                 barrier1 = new Bitmap(Properties.Resources.coverDmg4Big);
             }
 
-            if (barrier2health == 12)
+            if (barrier2health == 24)
             {
                 barrier2 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier2health == 9)
+            else if (barrier2health == 18)
             {
                 barrier2 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier2health == 6)
+            else if (barrier2health == 12)
             {
                 barrier2 = new Bitmap(Properties.Resources.coverDmg3Big);
             }
-            else if (barrier2health == 3)
+            else if (barrier2health == 6)
             {
                 barrier2 = new Bitmap(Properties.Resources.coverDmg4Big);
             }
 
-            if (barrier3health == 12)
+            if (barrier3health == 24)
             {
                 barrier3 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier3health == 9)
+            else if (barrier3health == 18)
             {
                 barrier3 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier3health == 6)
+            else if (barrier3health == 12)
             {
                 barrier3 = new Bitmap(Properties.Resources.coverDmg3Big);
             }
-            else if (barrier3health == 3)
+            else if (barrier3health == 6)
             {
                 barrier3 = new Bitmap(Properties.Resources.coverDmg4Big);
             }
 
-            if (barrier4health == 12)
+            if (barrier4health == 24)
             {
                 barrier4 = new Bitmap(Properties.Resources.coverDmg1Big);
             }
-            else if (barrier4health == 9)
+            else if (barrier4health == 18)
             {
                 barrier4 = new Bitmap(Properties.Resources.coverDmg2Big);
             }
-            else if (barrier4health == 6)
+            else if (barrier4health == 12)
             {
                 barrier4 = new Bitmap(Properties.Resources.coverDmg3Big);
             }
-            else if (barrier4health == 3)
+            else if (barrier4health == 6)
             {
                 barrier4 = new Bitmap(Properties.Resources.coverDmg4Big);
+            }
+            #endregion
+
+            #region UFO logic
+
+
+            int ufoTime = randGen.Next(UFO_WAIT_TIME, UFO_WAIT_TIME * 2);
+            ufoCounter++;
+
+            if (ufoCounter >= ufoTime)
+            {
+                ufoCounter = 0;
+                int randomNum = randGen.Next(1, 101);
+
+                // 50% for UFO
+                if (randomNum > 50 && !ufoOnScreen)
+                { 
+                    ufoOnScreen = true;
+
+                    ufoRect.X = ScreenControl.controlWidth - UFO_WIDTH;
+                    ufoRect.Y = UFO_HEIGHT;
+
+                    ufoSound.PlayLooping();
+                }
+            }
+
+            if (ufoOnScreen)
+            {
+                ufoRect.X -= UFO_SPEED;
+            }
+
+            if (ufoRect.X <= -UFO_WIDTH)
+            {
+                ufoOnScreen = false;
+
+                // stop ufo sound
+                ufoSound.Stop();
             }
             #endregion
 
@@ -999,6 +1078,11 @@ namespace GameTemplate.Screens
         /// </summary>
         private void pauseGame()
         {
+            if (ufoOnScreen)
+            {
+                ufoSound.Stop();
+            }
+
             gameTimer.Enabled = false;
             rightArrowDown = leftArrowDown = upArrowDown = downArrowDown = false;
 
@@ -1006,10 +1090,15 @@ namespace GameTemplate.Screens
 
             if (result == DialogResult.Cancel)
             {
+                if (ufoOnScreen)
+                {
+                    ufoSound.PlayLooping();
+                }
+
                 gameTimer.Enabled = true;
             }
             if (result == DialogResult.Abort)
-            {
+            {          
                 ScreenControl.changeScreen(this, "MenuScreen");
             }
         }
@@ -1097,6 +1186,11 @@ namespace GameTemplate.Screens
             foreach (Rectangle alien in row5)
             {
                 e.Graphics.DrawImage(alien1, alien);
+            }
+
+            if (ufoOnScreen)
+            {
+                e.Graphics.DrawImage(ufo, ufoRect);
             }
 
             if (alienKilled)

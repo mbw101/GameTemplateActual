@@ -146,9 +146,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\alienRandom.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\player.png" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +207,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\playerExplosionBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alienRandomBig.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

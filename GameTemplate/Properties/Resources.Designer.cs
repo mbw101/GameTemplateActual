@@ -132,9 +132,9 @@ namespace GameTemplate.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alienRandom {
+        internal static System.Drawing.Bitmap alienRandomBig {
             get {
-                object obj = ResourceManager.GetObject("alienRandom", resourceCulture);
+                object obj = ResourceManager.GetObject("alienRandomBig", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

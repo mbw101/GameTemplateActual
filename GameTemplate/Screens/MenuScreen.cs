@@ -61,7 +61,8 @@ namespace GameTemplate.Screens
                 }
                 else
                 {
-                    c.Location = new Point(700, 50);
+                    c.Font = new Font("Verdana", 24);
+                    c.Location = new Point(ScreenControl.controlWidth / 2 - c.Size.Width / 2, 460);
                 }
             }
 

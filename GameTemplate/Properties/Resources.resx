@@ -722,13 +722,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL
 </value>
   </data>
-  <data name="alienRandom" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAHCAIAAACOQloVAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAADFJREFUKFNjQAP/MRBOgKYODaEDNGmsCAHgfGIYUBbxCArQ+JhsOBcBsAjBAEKK
-        gQEAQo4/wXY0iJ8AAAAASUVORK5CYII=
-</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="bullet" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bullet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1453,6 +1446,16 @@
         qOyiIV/kUtlFQ77IpbJLmhkqR7hIM8N79AJpMrsPcvulybilLm6/NBm31MXt33IQdt6JMysw+x49wc47
         cWYFZuWDDFhZEfcqpJkBF1fEvQppZsDFFXGvQpqDSBG+2SHeN5HmIBbeK943keYgFt4r3jeR5j+w9KSu
         N8AQAYtO6noDDBGw6KR+N/T2AVq/R1THRFKaAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="alienRandomBig" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADAAAAAVCAYAAAAAY20CAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xOdTWsmQAAADCSURBVFhH7c/R
+        CoMwEERR//+n08mCQmevaKIkKfThTGWYru1WSum36eMNyl5Y3uY/pJeyF5a3+Q/ppeyFZeIvHEV5BcvE
+        D4+ivIJl4odHUV7BMvix2ZQEy+AHZlMSLIMfmE1Jvgv/0k656uZ4CD7cKVfdHA/Bhzvlqpvz0Y/4/4HZ
+        lCdgnCgRbSsloq1TEiyDHyBKRNtKiWjrlATL4AeIEtG2UiLaOiXBMrlx6DWN78IyaTz6SOO7sEwajz7S
+        9K6yfQBYT4b4P/CUkgAAAABJRU5ErkJggg==
 </value>
   </data>
 </root>
