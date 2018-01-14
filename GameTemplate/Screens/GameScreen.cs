@@ -44,12 +44,8 @@ namespace GameTemplate.Screens
              barrier1, barrier2, barrier3, barrier4, bullet, alienExplosion;
         // we can change the barrier image depending on the health
 
-        Rectangle bulletRect, playerRect, barrier1Rect,
-<<<<<<< HEAD
-            barrier2Rect, barrier3Rect, barrier4Rect, ufoRect;
-=======
-            barrier2Rect, barrier3Rect, barrier4Rect, destroyedAlienRect;
->>>>>>> 1014dcd9a33e91cbb6dca20327984592a46c6d9a
+        Rectangle bulletRect, playerRect, barrier1Rect, barrier2Rect, 
+            barrier3Rect, barrier4Rect, ufoRect, destroyedAlienRect;
 
         List<Rectangle> row1 = new List<Rectangle>(11);
         List<Rectangle> row2 = new List<Rectangle>(11);
@@ -88,11 +84,8 @@ namespace GameTemplate.Screens
         int elapsed = 0;
         int alienAnimationCounter = 0;
         int timeSinceLastShot = 0;
-<<<<<<< HEAD
         int ufoCounter = 0;
-=======
         int explosionCounter = 0;
->>>>>>> 1014dcd9a33e91cbb6dca20327984592a46c6d9a
 
         public GameScreen()
         {
@@ -333,7 +326,11 @@ namespace GameTemplate.Screens
             if (spaceDown && !bulletOnScreen)
             {
                 bulletOnScreen = true;
-                playerBullet.Play();
+
+                if (!ufoOnScreen)
+                {
+                    playerBullet.Play();
+                }
 
                 // move the bullet over the player
                 bulletRect.X = playerRect.X + (playerRect.Width / 2);
@@ -720,7 +717,10 @@ namespace GameTemplate.Screens
                     bullets.Add(tempRectangle);
                 }
 
-                alienBullet.Play();
+                if (!ufoOnScreen)
+                {
+                    alienBullet.Play();
+                }
             }
 
             for (int i = 0; i < bullets.Count(); i++)
@@ -793,7 +793,10 @@ namespace GameTemplate.Screens
                         playerBullet.Stop();
 
                         // play explosion
-                        alienHit.Play();
+                        if (!ufoOnScreen)
+                        {
+                            alienHit.Play();
+                        }
 
                         alienKilled = true;
 
@@ -818,7 +821,10 @@ namespace GameTemplate.Screens
                         playerBullet.Stop();
 
                         // play explosion
-                        alienHit.Play();
+                        if (!ufoOnScreen)
+                        {
+                            alienHit.Play();
+                        }
 
                         alienKilled = true;
 
@@ -843,7 +849,10 @@ namespace GameTemplate.Screens
                         playerBullet.Stop();
 
                         // play explosion
-                        alienHit.Play();
+                        if (!ufoOnScreen)
+                        {
+                            alienHit.Play();
+                        }
 
                         alienKilled = true;
 
@@ -872,7 +881,11 @@ namespace GameTemplate.Screens
                         alienKilled = true;
 
                         // play explosion
-                        alienHit.Play();
+                        if (!ufoOnScreen)
+                        {
+                            alienHit.Play();
+                        }
+
                         row4.Remove(alien);
 
                         score += ALIEN1_SCORE;
@@ -898,7 +911,10 @@ namespace GameTemplate.Screens
                         // get rid of bullet
                         bulletOnScreen = false;
                         // play explosion
-                        alienHit.Play();
+                        if (!ufoOnScreen)
+                        {
+                            alienHit.Play();
+                        }
 
                         score += ALIEN1_SCORE;
 
@@ -1266,20 +1282,11 @@ namespace GameTemplate.Screens
             {
                 e.Graphics.DrawImage(alien1, alien);
             }
-<<<<<<< HEAD
 
             if (ufoOnScreen)
             {
                 e.Graphics.DrawImage(ufo, ufoRect);
             }
-
-            if (alienKilled)
-            {
-                // draw explosion
-
-            }
-=======
->>>>>>> 1014dcd9a33e91cbb6dca20327984592a46c6d9a
         }
     }
 }
