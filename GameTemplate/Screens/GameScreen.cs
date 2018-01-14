@@ -37,18 +37,19 @@ namespace GameTemplate.Screens
         bool alienMovedown = false;
 
         // Graphics
-        Graphics offScreen;
-        Graphics onScreen;
-        Bitmap bm;
         SolidBrush solidBrush, greenBrush;
         Pen pen;
         Font titleFont, menuFont, subFont;
         Image alien1, alien2, alien3, ufo, player, playerExplosion,
-             barrier1, barrier2, barrier3, barrier4, bullet;
+             barrier1, barrier2, barrier3, barrier4, bullet, alienExplosion;
         // we can change the barrier image depending on the health
 
         Rectangle bulletRect, playerRect, barrier1Rect,
+<<<<<<< HEAD
             barrier2Rect, barrier3Rect, barrier4Rect, ufoRect;
+=======
+            barrier2Rect, barrier3Rect, barrier4Rect, destroyedAlienRect;
+>>>>>>> 1014dcd9a33e91cbb6dca20327984592a46c6d9a
 
         List<Rectangle> row1 = new List<Rectangle>(11);
         List<Rectangle> row2 = new List<Rectangle>(11);
@@ -56,7 +57,7 @@ namespace GameTemplate.Screens
         List<Rectangle> row4 = new List<Rectangle>(11);
         List<Rectangle> row5 = new List<Rectangle>(11);
 
-        List<Rectangle> bullets = new List<Rectangle>(3);
+        List<Rectangle> bullets = new List<Rectangle>(MAX_ALIEN_BULLETS);
 
         // sounds and images
         SoundPlayer playerBullet, alienBullet, alienHit, playerHitSound,
@@ -80,15 +81,18 @@ namespace GameTemplate.Screens
         const int UFO_WAIT_TIME = 350;
         const int UFO_SCORE = 100;
         const int MOVEMENT_TIME = 500; //changed
-        const int ALIEN_SHOOT_TIME = 400; // 200
-        const int SLOW_ALIEN_SHOOT_TIME = 400;
+        const int ALIEN_SHOOT_TIME = 600; // 200
         const int ALIEN_SLOW_SHOOT_TIME = 400;
 
         // counters
         int elapsed = 0;
         int alienAnimationCounter = 0;
         int timeSinceLastShot = 0;
+<<<<<<< HEAD
         int ufoCounter = 0;
+=======
+        int explosionCounter = 0;
+>>>>>>> 1014dcd9a33e91cbb6dca20327984592a46c6d9a
 
         public GameScreen()
         {
@@ -148,6 +152,7 @@ namespace GameTemplate.Screens
             bullet = new Bitmap(Properties.Resources.bullet);
             player = new Bitmap(Properties.Resources.playerBig);
             playerExplosion = new Bitmap(Properties.Resources.playerExplosionBig);
+            alienExplosion = new Bitmap(Properties.Resources.explosionBig);
             alien1 = new Bitmap(Properties.Resources.alien10Big);
             alien2 = new Bitmap(Properties.Resources.alien20Big);
             alien3 = new Bitmap(Properties.Resources.alien40Big);
@@ -360,6 +365,16 @@ namespace GameTemplate.Screens
 
 
             #region monster movements - TO BE COMPLETED
+
+
+            explosionCounter++;
+            if (alienKilled && explosionCounter >= 6)
+            {
+                explosionCounter = 0;
+
+                alienKilled = false;
+            }
+
             elapsed += gameTimer.Interval;
 
             if (elapsed >= MOVEMENT_TIME)
@@ -475,30 +490,55 @@ namespace GameTemplate.Screens
                 }
                 else if (row4.Count != 0)
                 {
-                    // check bounds
-                    if (row1[0].X <= 0 || row2[0].X <= 0
-                        || row3[0].X <= 0 || row4[0].X <= 0)
+                    if (row3.Count == 0)
                     {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
+                        // check bounds
+                        if (row1[0].X <= 0 || row2[0].X <= 0
+                            || row4[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
-                        // move down
-                        alienMovedown = true;
+                            // move down
+                            alienMovedown = true;
+                        }
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
                     }
+                    else
+                    {
+                        // check bounds
+                        if (row1[0].X <= 0 || row2[0].X <= 0
+                            || row3[0].X <= 0 || row4[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
+                            // move down
+                            alienMovedown = true;
+                        }
 
-                    if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
                         || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
                         || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
                         || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
 
-                        // move down
-                        alienMovedown = true;
-                    }
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }      
                 }
                 else if (row3.Count != 0)
                 {
@@ -602,7 +642,7 @@ namespace GameTemplate.Screens
                 randomShootTime = randGen.Next(ALIEN_SHOOT_TIME, 1000);
             }
             timeSinceLastShot += gameTimer.Interval;
-            
+
             if (timeSinceLastShot >= randomShootTime)
             {
                 timeSinceLastShot = 0;
@@ -679,6 +719,8 @@ namespace GameTemplate.Screens
 
                     bullets.Add(tempRectangle);
                 }
+
+                alienBullet.Play();
             }
 
             for (int i = 0; i < bullets.Count(); i++)
@@ -753,12 +795,18 @@ namespace GameTemplate.Screens
                         // play explosion
                         alienHit.Play();
 
+                        alienKilled = true;
+
+                        destroyedAlienRect = alien;
+
                         row1.Remove(alien);
 
                         score += ALIEN3_SCORE;
 
                         // get rid of bullet
                         bulletOnScreen = false;
+
+                        Refresh();
                         break;
                     }
                 }
@@ -772,12 +820,18 @@ namespace GameTemplate.Screens
                         // play explosion
                         alienHit.Play();
 
+                        alienKilled = true;
+
+                        destroyedAlienRect = alien;
+
                         row2.Remove(alien);
 
                         score += ALIEN2_SCORE;
 
                         // get rid of bullet
                         bulletOnScreen = false;
+
+                        Refresh();
                         break;
                     }
                 }
@@ -791,12 +845,18 @@ namespace GameTemplate.Screens
                         // play explosion
                         alienHit.Play();
 
+                        alienKilled = true;
+
+                        destroyedAlienRect = alien;
+
                         row3.Remove(alien);
 
                         score += ALIEN2_SCORE;
 
                         // get rid of bullet
                         bulletOnScreen = false;
+
+                        Refresh();
                         break;
                     }
                 }
@@ -807,6 +867,10 @@ namespace GameTemplate.Screens
                     {
                         playerBullet.Stop();
 
+                        destroyedAlienRect = alien;
+
+                        alienKilled = true;
+
                         // play explosion
                         alienHit.Play();
                         row4.Remove(alien);
@@ -815,6 +879,8 @@ namespace GameTemplate.Screens
 
                         // get rid of bullet
                         bulletOnScreen = false;
+
+                        Refresh();
                         break;
                     }
                 }
@@ -825,6 +891,10 @@ namespace GameTemplate.Screens
                     {
                         playerBullet.Stop();
 
+                        destroyedAlienRect = alien;
+
+                        alienKilled = true;
+
                         // get rid of bullet
                         bulletOnScreen = false;
                         // play explosion
@@ -833,6 +903,8 @@ namespace GameTemplate.Screens
                         score += ALIEN1_SCORE;
 
                         row5.Remove(alien);
+
+                        Refresh();
                         break;
                     }
                 }
@@ -1167,6 +1239,13 @@ namespace GameTemplate.Screens
                 e.Graphics.DrawImage(bullet, bullets[i]);
             }
 
+
+            if (alienKilled)
+            {
+                // draw explosion
+                e.Graphics.DrawImage(alienExplosion, destroyedAlienRect);
+            }
+
             foreach (Rectangle alien in row1)
             {
                 e.Graphics.DrawImage(alien3, alien);
@@ -1187,6 +1266,7 @@ namespace GameTemplate.Screens
             {
                 e.Graphics.DrawImage(alien1, alien);
             }
+<<<<<<< HEAD
 
             if (ufoOnScreen)
             {
@@ -1198,6 +1278,8 @@ namespace GameTemplate.Screens
                 // draw explosion
 
             }
+=======
+>>>>>>> 1014dcd9a33e91cbb6dca20327984592a46c6d9a
         }
     }
 }
