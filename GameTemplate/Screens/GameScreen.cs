@@ -66,19 +66,24 @@ namespace GameTemplate.Screens
         const int BULLET_SPEED = 10;
         const int ALIEN_BULLET_SPEED = 7;
         const int MAX_ALIEN_BULLETS = 3;
-        const int PLAYER_SPEED = 4;
-        const int ALIEN_SPEED = 4; //6 
-        const int ALIEN_DOWNSPEED = 10;
+        const int PLAYER_SPEED = 6;
+        const int ALIEN_SPEED = 6; //6 
+        const int ALIEN_THREE_QUARTER_SPEED = 10;
+        const int ALIEN_HALF_SPEED = 14;
+        const int ALIEN_QUARTER_SPEED = 18;
+        const int ALIEN_DOWNSPEED = 24;
         const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
         const int UFO_WIDTH = 48;
         const int UFO_HEIGHT = 21;
-        const int UFO_SPEED = 8; // 8
+        const int UFO_SPEED = 4; // 8
         const int UFO_WAIT_TIME = 350;
         const int UFO_SCORE = 100;
-        const int MOVEMENT_TIME = 500; //changed
+        const int MOVEMENT_TIME = 500; //500
         const int ALIEN_SHOOT_TIME = 600; // 200
         const int ALIEN_SLOW_SHOOT_TIME = 400;
+        const int BULLET_WIDTH = 3;
+        const int BULLET_HEIGHT = 9;
 
         // counters
         int elapsed = 0;
@@ -90,6 +95,8 @@ namespace GameTemplate.Screens
         public GameScreen()
         {
             InitializeComponent();
+
+            score = 0;
 
             pen = new Pen(Color.White, 10);
             solidBrush = new SolidBrush(Color.White);
@@ -127,8 +134,8 @@ namespace GameTemplate.Screens
 
             bulletRect.X = 0;
             bulletRect.Y = 0;
-            bulletRect.Width = 1;
-            bulletRect.Height = 6;
+            bulletRect.Width = BULLET_WIDTH;
+            bulletRect.Height = BULLET_HEIGHT;
 
             ufoRect.X = 0;
             ufoRect.Y = 0;
@@ -378,18 +385,46 @@ namespace GameTemplate.Screens
             {
                 elapsed = 0;
 
+                int sum = row1.Count + row2.Count + row3.Count + row4.Count + row5.Count;
+
                 for (int i = 0; i < row1.Count(); i++)
                 {
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        row1[i] = new Rectangle(row1[i].X - ALIEN_SPEED,
-                            row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row1[i] = new Rectangle(row1[i].X - ALIEN_THREE_QUARTER_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row1[i] = new Rectangle(row1[i].X - ALIEN_HALF_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row1[i] = new Rectangle(row1[i].X - ALIEN_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        row1[i] = new Rectangle(row1[i].X + ALIEN_SPEED,
-                            row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row1[i] = new Rectangle(row1[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row1[i] = new Rectangle(row1[i].X + ALIEN_HALF_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row1[i] = new Rectangle(row1[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                 }
 
@@ -398,13 +433,39 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        row2[i] = new Rectangle(row2[i].X - ALIEN_SPEED,
-                            row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row2[i] = new Rectangle(row2[i].X - ALIEN_THREE_QUARTER_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row2[i] = new Rectangle(row2[i].X - ALIEN_HALF_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row2[i] = new Rectangle(row2[i].X - ALIEN_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        row2[i] = new Rectangle(row2[i].X + ALIEN_SPEED,
-                            row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row2[i] = new Rectangle(row2[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row2[i] = new Rectangle(row2[i].X + ALIEN_HALF_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row2[i] = new Rectangle(row2[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                 }
 
@@ -413,14 +474,39 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        row3[i] = new Rectangle(row3[i].X - ALIEN_SPEED,
-                            row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
-                        //alien2 = new Bitmap(Properties.Resources.alien20altBig);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row3[i] = new Rectangle(row3[i].X - ALIEN_THREE_QUARTER_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row3[i] = new Rectangle(row3[i].X - ALIEN_HALF_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row3[i] = new Rectangle(row3[i].X - ALIEN_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        row3[i] = new Rectangle(row3[i].X + ALIEN_SPEED,
-                            row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row3[i] = new Rectangle(row3[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row3[i] = new Rectangle(row3[i].X + ALIEN_HALF_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row3[i] = new Rectangle(row3[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                 }
 
@@ -429,13 +515,39 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        row4[i] = new Rectangle(row4[i].X - ALIEN_SPEED,
-                            row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row4[i] = new Rectangle(row4[i].X - ALIEN_THREE_QUARTER_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row4[i] = new Rectangle(row4[i].X - ALIEN_HALF_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row4[i] = new Rectangle(row4[i].X - ALIEN_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        row4[i] = new Rectangle(row4[i].X + ALIEN_SPEED,
-                            row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row4[i] = new Rectangle(row4[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row4[i] = new Rectangle(row4[i].X + ALIEN_HALF_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row4[i] = new Rectangle(row4[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                 }
 
@@ -444,13 +556,39 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        row5[i] = new Rectangle(row5[i].X - ALIEN_SPEED,
-                            row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row5[i] = new Rectangle(row5[i].X - ALIEN_THREE_QUARTER_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row5[i] = new Rectangle(row5[i].X - ALIEN_HALF_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row5[i] = new Rectangle(row5[i].X - ALIEN_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        row5[i] = new Rectangle(row5[i].X + ALIEN_SPEED,
-                            row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        if (sum <= 42 && sum >= 27)
+                        {
+                            row5[i] = new Rectangle(row5[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else if (sum <= 26 && sum >= 11)
+                        {
+                            row5[i] = new Rectangle(row5[i].X + ALIEN_HALF_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        else
+                        {
+                            row5[i] = new Rectangle(row5[i].X + ALIEN_THREE_QUARTER_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                     }
                 }
 
@@ -655,8 +793,8 @@ namespace GameTemplate.Screens
 
                     tempBullet.X = row5[randAlien].X + ALIEN_WIDTH / 2;
                     tempBullet.Y = row5[randAlien].Y + ALIEN_HEIGHT;
-                    tempBullet.Width = 1;
-                    tempBullet.Height = 6;
+                    tempBullet.Width = BULLET_WIDTH;
+                    tempBullet.Height = BULLET_HEIGHT;
 
                     bullets.Add(tempBullet);
                 }
@@ -669,8 +807,8 @@ namespace GameTemplate.Screens
 
                     tempBullet.X = row4[randAlien].X + ALIEN_WIDTH / 2;
                     tempBullet.Y = row4[randAlien].Y + ALIEN_HEIGHT;
-                    tempBullet.Width = 1;
-                    tempBullet.Height = 6;
+                    tempBullet.Width = BULLET_WIDTH;
+                    tempBullet.Height = BULLET_HEIGHT;
 
                     bullets.Add(tempBullet);
                 }
@@ -683,8 +821,8 @@ namespace GameTemplate.Screens
 
                     tempBullet.X = row3[randAlien].X + ALIEN_WIDTH / 2;
                     tempBullet.Y = row3[randAlien].Y + ALIEN_HEIGHT;
-                    tempBullet.Width = 1;
-                    tempBullet.Height = 6;
+                    tempBullet.Width = BULLET_WIDTH;
+                    tempBullet.Height = BULLET_HEIGHT;
 
                     bullets.Add(tempBullet);
                 }
@@ -697,8 +835,8 @@ namespace GameTemplate.Screens
 
                     tempRectangle.X = row2[randAlien].X + ALIEN_WIDTH / 2;
                     tempRectangle.Y = row2[randAlien].Y + ALIEN_HEIGHT;
-                    tempRectangle.Width = 1;
-                    tempRectangle.Height = 6;
+                    tempRectangle.Width = BULLET_WIDTH;
+                    tempRectangle.Height = BULLET_HEIGHT;
 
                     bullets.Add(tempRectangle);
                 }
@@ -711,8 +849,8 @@ namespace GameTemplate.Screens
 
                     tempRectangle.X = row1[randAlien].X + ALIEN_WIDTH / 2;
                     tempRectangle.Y = row1[randAlien].Y + ALIEN_HEIGHT;
-                    tempRectangle.Width = 1;
-                    tempRectangle.Height = 6;
+                    tempRectangle.Width = BULLET_WIDTH;
+                    tempRectangle.Height = BULLET_HEIGHT;
 
                     bullets.Add(tempRectangle);
                 }
@@ -726,8 +864,8 @@ namespace GameTemplate.Screens
             for (int i = 0; i < bullets.Count(); i++)
             {
                 bullets[i] = new Rectangle(bullets[i].X,
-                    bullets[i].Y + ALIEN_BULLET_SPEED, 1,
-                    6);
+                    bullets[i].Y + ALIEN_BULLET_SPEED, BULLET_WIDTH,
+                    BULLET_HEIGHT);
 
                 // remove if they reach the bottom
                 if (bullets[i].Y >= ScreenControl.controlHeight)
@@ -1133,6 +1271,9 @@ namespace GameTemplate.Screens
         {
             // add a life
             lives++;
+
+            // get rid of ufo
+            ufoOnScreen = false;
 
             for (int i = 0; i < row1.Capacity; i++)
             {
