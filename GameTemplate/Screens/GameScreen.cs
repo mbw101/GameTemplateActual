@@ -44,7 +44,7 @@ namespace GameTemplate.Screens
              barrier1, barrier2, barrier3, barrier4, bullet, alienExplosion;
         // we can change the barrier image depending on the health
 
-        Rectangle bulletRect, playerRect, barrier1Rect, barrier2Rect, 
+        Rectangle bulletRect, playerRect, barrier1Rect, barrier2Rect,
             barrier3Rect, barrier4Rect, ufoRect, destroyedAlienRect;
 
         List<Rectangle> row1 = new List<Rectangle>(11);
@@ -625,10 +625,10 @@ namespace GameTemplate.Screens
                 }
                 else if (row4.Count != 0)
                 {
-                    if (row3.Count == 0)
+                    // check bounds
+                    if (row1.Count == 0)
                     {
-                        // check bounds
-                        if (row1[0].X <= 0 || row2[0].X <= 0
+                        if (row2[0].X <= 0 || row3[0].X <= 0
                             || row4[0].X <= 0)
                         {
                             // change direction to right
@@ -638,8 +638,53 @@ namespace GameTemplate.Screens
                             alienMovedown = true;
                         }
 
+
+                        if (row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }
+                    else if (row2.Count == 0)
+                    {
+                        if (row1[0].X <= 0 || row4[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+
                         if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }
+                    else if (row3.Count == 0)
+                    {
+                        if (row2[0].X <= 0 || 
+                            row4[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
                         || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
                         {
                             // change direction to left
@@ -651,9 +696,8 @@ namespace GameTemplate.Screens
                     }
                     else
                     {
-                        // check bounds
-                        if (row1[0].X <= 0 || row2[0].X <= 0
-                            || row3[0].X <= 0 || row4[0].X <= 0)
+                        if (row1[0].X <= 0 || row2[0].X <= 0 || row3[0].X <= 0 ||
+                            row4[0].X <= 0)
                         {
                             // change direction to right
                             alienDirection = Direction.RIGHT;
@@ -673,51 +717,146 @@ namespace GameTemplate.Screens
                             // move down
                             alienMovedown = true;
                         }
-                    }      
+                    }
+                    // check bounds
                 }
                 else if (row3.Count != 0)
                 {
                     // check bounds
-                    if (row1[0].X <= 0 || row2[0].X <= 0 || row3[0].X <= 0)
+                    if (row1.Count == 0)
                     {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
+                        if (row2[0].X <= 0 || row3[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
-                        // move down
-                        alienMovedown = true;
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
                     }
+                    else if (row2.Count == 0)
+                    {
+                        if (row1[0].X <= 0 || row3[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
-                    if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            // move down
+                            alienMovedown = true;
+                        }
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }
+                    else if (row3.Count == 0)
+                    {
+                        if (row2[0].X <= 0 ||
+                            row4[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                        || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }
+                    else
+                    {
+                        if (row1[0].X <= 0 || row2[0].X <= 0 || row3[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
                         || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
                         || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
-                    {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
 
-                        // move down
-                        alienMovedown = true;
+                            // move down
+                            alienMovedown = true;
+                        }
                     }
                 }
                 else if (row2.Count != 0)
                 {
                     // check bounds
-                    if (row1[0].X <= 0 || row2[0].X <= 0)
+                    if (row1.Count == 0)
                     {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
+                        if (row2[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
-                        // move down
-                        alienMovedown = true;
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
                     }
-
-                    if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    else
                     {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
+                        // check bounds
+                        if (row1[0].X <= 0 || row2[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
-                        // move down
-                        alienMovedown = true;
+                            // move down
+                            alienMovedown = true;
+                        }
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
                     }
                 }
                 else if (row1.Count != 0)
@@ -776,6 +915,7 @@ namespace GameTemplate.Screens
             {
                 randomShootTime = randGen.Next(ALIEN_SHOOT_TIME, 1000);
             }
+
             timeSinceLastShot += gameTimer.Interval;
 
             if (timeSinceLastShot >= randomShootTime)
@@ -928,11 +1068,11 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
-                        playerBullet.Stop();
-
                         // play explosion
                         if (!ufoOnScreen)
                         {
+                            playerBullet.Stop();
+
                             alienHit.Play();
                         }
 
@@ -956,11 +1096,12 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
-                        playerBullet.Stop();
 
                         // play explosion
                         if (!ufoOnScreen)
                         {
+                            playerBullet.Stop();
+
                             alienHit.Play();
                         }
 
@@ -984,11 +1125,11 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
-                        playerBullet.Stop();
-
                         // play explosion
                         if (!ufoOnScreen)
                         {
+                            playerBullet.Stop();
+
                             alienHit.Play();
                         }
 
@@ -1012,8 +1153,6 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
-                        playerBullet.Stop();
-
                         destroyedAlienRect = alien;
 
                         alienKilled = true;
@@ -1021,6 +1160,8 @@ namespace GameTemplate.Screens
                         // play explosion
                         if (!ufoOnScreen)
                         {
+                            playerBullet.Stop();
+
                             alienHit.Play();
                         }
 
@@ -1040,8 +1181,6 @@ namespace GameTemplate.Screens
                 {
                     if (alien.IntersectsWith(bulletRect))
                     {
-                        playerBullet.Stop();
-
                         destroyedAlienRect = alien;
 
                         alienKilled = true;
@@ -1051,6 +1190,8 @@ namespace GameTemplate.Screens
                         // play explosion
                         if (!ufoOnScreen)
                         {
+                            playerBullet.Stop();
+
                             alienHit.Play();
                         }
 
@@ -1137,7 +1278,7 @@ namespace GameTemplate.Screens
                             bullets.Remove(bullets[i]);
                             playerHit = true;
                         }
-                        
+
                         break;
                     }
                 }
@@ -1228,7 +1369,7 @@ namespace GameTemplate.Screens
 
                 // 50% for UFO
                 if (randomNum > 50 && !ufoOnScreen)
-                { 
+                {
                     ufoOnScreen = true;
 
                     ufoRect.X = ScreenControl.controlWidth - UFO_WIDTH;
@@ -1327,7 +1468,7 @@ namespace GameTemplate.Screens
                 gameTimer.Enabled = true;
             }
             if (result == DialogResult.Abort)
-            {          
+            {
                 ScreenControl.changeScreen(this, "MenuScreen");
             }
         }
