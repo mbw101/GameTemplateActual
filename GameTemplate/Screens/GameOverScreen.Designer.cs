@@ -51,9 +51,9 @@
             this.loseTitleLabel.Font = new System.Drawing.Font("Verdana", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loseTitleLabel.Location = new System.Drawing.Point(130, 15);
             this.loseTitleLabel.Name = "loseTitleLabel";
-            this.loseTitleLabel.Size = new System.Drawing.Size(179, 42);
+            this.loseTitleLabel.Size = new System.Drawing.Size(231, 42);
             this.loseTitleLabel.TabIndex = 1;
-            this.loseTitleLabel.Text = "You Lost!";
+            this.loseTitleLabel.Text = "GAME OVER";
             // 
             // scoreLabel
             // 

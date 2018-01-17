@@ -63,14 +63,10 @@ namespace GameTemplate.Screens
         const int ALIEN1_SCORE = 10;
         const int ALIEN2_SCORE = 20;
         const int ALIEN3_SCORE = 40;
-        const int BULLET_SPEED = 10;
+        const int BULLET_SPEED = 15;
         const int ALIEN_BULLET_SPEED = 7;
         const int MAX_ALIEN_BULLETS = 3;
         const int PLAYER_SPEED = 6;
-        const int ALIEN_SPEED = 6; //6 
-        const int ALIEN_THREE_QUARTER_SPEED = 10;
-        const int ALIEN_HALF_SPEED = 14;
-        const int ALIEN_QUARTER_SPEED = 18;
         const int ALIEN_DOWNSPEED = 24;
         const int ALIEN_WIDTH = 36;
         const int ALIEN_HEIGHT = 24;
@@ -79,8 +75,9 @@ namespace GameTemplate.Screens
         const int UFO_SPEED = 4; // 8
         const int UFO_WAIT_TIME = 350;
         const int UFO_SCORE = 100;
-        const int MOVEMENT_TIME = 500; //500
+        const int MOVEMENT_TIME = 500;
         const int ALIEN_SHOOT_TIME = 600; // 200
+        const int MAX_ALIEN_SHOOT_TIME = 800;
         const int ALIEN_SLOW_SHOOT_TIME = 400;
         const int BULLET_WIDTH = 3;
         const int BULLET_HEIGHT = 9;
@@ -91,6 +88,12 @@ namespace GameTemplate.Screens
         int timeSinceLastShot = 0;
         int ufoCounter = 0;
         int explosionCounter = 0;
+        int levelCounter = 4;
+
+        int ALIEN_SPEED = 6; //6
+        int ALIEN_THREE_QUARTER_SPEED = 10;
+        int ALIEN_HALF_SPEED = 14;
+        int ALIEN_QUARTER_SPEED = 18;
 
         public GameScreen()
         {
@@ -170,11 +173,11 @@ namespace GameTemplate.Screens
                 Rectangle tempRect4 = new Rectangle();
                 Rectangle tempRect5 = new Rectangle();
 
-                tempRect = new Rectangle(102 + (45 * i), 100, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect2 = new Rectangle(102 + (45 * i), 150, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect3 = new Rectangle(102 + (45 * i), 200, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect4 = new Rectangle(100 + (45 * i), 250, ALIEN_WIDTH, ALIEN_HEIGHT);
-                tempRect5 = new Rectangle(100 + (45 * i), 300, ALIEN_WIDTH, ALIEN_HEIGHT);
+                tempRect = new Rectangle(102 + (45 * i), 100, ALIEN_WIDTH, ALIEN_HEIGHT); 
+                tempRect2 = new Rectangle(102 + (45 * i), 150, ALIEN_WIDTH, ALIEN_HEIGHT); 
+                tempRect3 = new Rectangle(102 + (45 * i), 200, ALIEN_WIDTH, ALIEN_HEIGHT); 
+                tempRect4 = new Rectangle(100 + (45 * i), 250, ALIEN_WIDTH, ALIEN_HEIGHT); 
+                tempRect5 = new Rectangle(100 + (45 * i), 300, ALIEN_WIDTH, ALIEN_HEIGHT); 
 
                 row1.Add(tempRect);
                 row2.Add(tempRect2);
@@ -192,12 +195,25 @@ namespace GameTemplate.Screens
                 {
                     row1[i] = new Rectangle(row1[i].X,
                         row1[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+
+                    if (row1[i].Y >= barrier1Rect.Y + ALIEN_HEIGHT || row1[i].Y >= barrier2Rect.Y + ALIEN_HEIGHT
+                    || row1[i].Y >= barrier3Rect.Y + ALIEN_HEIGHT || row1[i].Y >= barrier4Rect.Y + ALIEN_HEIGHT)
+                    {
+                        // end game
+                        lives = 0;
+
+                        gameTimer.Enabled = false;
+
+                        ScreenControl.changeScreen(this, "GameOverScreen");
+                    }
                 }
 
                 for (int i = 0; i < row2.Count(); i++)
                 {
                     row2[i] = new Rectangle(row2[i].X,
                         row2[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+
+
                 }
 
                 for (int i = 0; i < row3.Count(); i++)
@@ -216,6 +232,17 @@ namespace GameTemplate.Screens
                 {
                     row5[i] = new Rectangle(row5[i].X,
                         row5[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
+
+                    if (row5[i].Y >= barrier1Rect.Y + ALIEN_HEIGHT || row5[i].Y >= barrier2Rect.Y + ALIEN_HEIGHT
+                    || row5[i].Y >= barrier3Rect.Y + ALIEN_HEIGHT || row5[i].Y >= barrier4Rect.Y + ALIEN_HEIGHT)
+                    {
+                        //gameTimer.Enabled = false;
+
+                        //ScreenControl.changeScreen(this, "GameOverScreen");
+
+                        // end game
+                        lives = 0;
+                    }
                 }
 
                 alienMovedown = false;
@@ -318,6 +345,13 @@ namespace GameTemplate.Screens
         /// <param name="e"></param>
         private void gameTimer_Tick(object sender, EventArgs e)
         {
+            if (lives == 0)
+            {
+                gameTimer.Enabled = false;
+
+                ScreenControl.changeScreen(this, "GameOverScreen");
+            }
+
             #region main character movements
 
             if (leftArrowDown == true && playerRect.X > 0)
@@ -341,7 +375,7 @@ namespace GameTemplate.Screens
 
                 // move the bullet over the player
                 bulletRect.X = playerRect.X + (playerRect.Width / 2);
-                bulletRect.Y = playerRect.Y - 15;
+                bulletRect.Y = playerRect.Y - 5;
             }
 
             if (bulletOnScreen)
@@ -367,9 +401,29 @@ namespace GameTemplate.Screens
 
             #endregion
 
-
             #region monster movements - TO BE COMPLETED
 
+            if (levelCounter == 2)
+            {
+                ALIEN_SPEED = 8;
+                ALIEN_THREE_QUARTER_SPEED = 12; 
+                ALIEN_HALF_SPEED = 16;
+                ALIEN_QUARTER_SPEED = 20;
+            }
+            else if (levelCounter == 3)
+            {
+                ALIEN_SPEED = 11;
+                ALIEN_THREE_QUARTER_SPEED = 15;
+                ALIEN_HALF_SPEED = 19;
+                ALIEN_QUARTER_SPEED = 23;
+            }
+            else if (levelCounter >= 4)
+            {
+                ALIEN_SPEED = 14;
+                ALIEN_THREE_QUARTER_SPEED = 18;
+                ALIEN_HALF_SPEED = 22;
+                ALIEN_QUARTER_SPEED = 26;
+            }
 
             explosionCounter++;
             if (alienKilled && explosionCounter >= 6)
@@ -394,7 +448,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row1[i] = new Rectangle(row1[i].X - ALIEN_THREE_QUARTER_SPEED,
+                            row1[i] = new Rectangle(row1[i].X - ALIEN_QUARTER_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -402,6 +456,7 @@ namespace GameTemplate.Screens
                             row1[i] = new Rectangle(row1[i].X - ALIEN_HALF_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
+                        // do one quarter
                         else
                         {
                             row1[i] = new Rectangle(row1[i].X - ALIEN_SPEED,
@@ -412,7 +467,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row1[i] = new Rectangle(row1[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row1[i] = new Rectangle(row1[i].X + ALIEN_QUARTER_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -422,7 +477,7 @@ namespace GameTemplate.Screens
                         }
                         else
                         {
-                            row1[i] = new Rectangle(row1[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row1[i] = new Rectangle(row1[i].X + ALIEN_QUARTER_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                     }
@@ -435,7 +490,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row2[i] = new Rectangle(row2[i].X - ALIEN_THREE_QUARTER_SPEED,
+                            row2[i] = new Rectangle(row2[i].X - ALIEN_QUARTER_SPEED,
                                 row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -453,7 +508,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row2[i] = new Rectangle(row2[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row2[i] = new Rectangle(row2[i].X + ALIEN_QUARTER_SPEED,
                                 row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -463,7 +518,7 @@ namespace GameTemplate.Screens
                         }
                         else
                         {
-                            row2[i] = new Rectangle(row2[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row2[i] = new Rectangle(row2[i].X + ALIEN_QUARTER_SPEED,
                                 row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                     }
@@ -476,7 +531,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row3[i] = new Rectangle(row3[i].X - ALIEN_THREE_QUARTER_SPEED,
+                            row3[i] = new Rectangle(row3[i].X - ALIEN_QUARTER_SPEED,
                                 row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -494,7 +549,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row3[i] = new Rectangle(row3[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row3[i] = new Rectangle(row3[i].X + ALIEN_QUARTER_SPEED,
                                 row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -504,7 +559,7 @@ namespace GameTemplate.Screens
                         }
                         else
                         {
-                            row3[i] = new Rectangle(row3[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row3[i] = new Rectangle(row3[i].X + ALIEN_QUARTER_SPEED,
                                 row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                     }
@@ -517,7 +572,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row4[i] = new Rectangle(row4[i].X - ALIEN_THREE_QUARTER_SPEED,
+                            row4[i] = new Rectangle(row4[i].X - ALIEN_QUARTER_SPEED,
                                 row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -535,7 +590,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row4[i] = new Rectangle(row4[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row4[i] = new Rectangle(row4[i].X + ALIEN_QUARTER_SPEED,
                                 row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -545,7 +600,7 @@ namespace GameTemplate.Screens
                         }
                         else
                         {
-                            row4[i] = new Rectangle(row4[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row4[i] = new Rectangle(row4[i].X + ALIEN_QUARTER_SPEED,
                                 row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                     }
@@ -558,7 +613,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row5[i] = new Rectangle(row5[i].X - ALIEN_THREE_QUARTER_SPEED,
+                            row5[i] = new Rectangle(row5[i].X - ALIEN_QUARTER_SPEED,
                                 row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -576,7 +631,7 @@ namespace GameTemplate.Screens
                     {
                         if (sum <= 42 && sum >= 27)
                         {
-                            row5[i] = new Rectangle(row5[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row5[i] = new Rectangle(row5[i].X + ALIEN_QUARTER_SPEED,
                                 row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else if (sum <= 26 && sum >= 11)
@@ -586,7 +641,7 @@ namespace GameTemplate.Screens
                         }
                         else
                         {
-                            row5[i] = new Rectangle(row5[i].X + ALIEN_THREE_QUARTER_SPEED,
+                            row5[i] = new Rectangle(row5[i].X + ALIEN_QUARTER_SPEED,
                                 row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                     }
@@ -673,7 +728,7 @@ namespace GameTemplate.Screens
                     }
                     else if (row3.Count == 0)
                     {
-                        if (row2[0].X <= 0 || 
+                        if (row2[0].X <= 0 ||
                             row4[0].X <= 0)
                         {
                             // change direction to right
@@ -913,11 +968,22 @@ namespace GameTemplate.Screens
             }
             else
             {
-                randomShootTime = randGen.Next(ALIEN_SHOOT_TIME, 1000);
+                randomShootTime = randGen.Next(ALIEN_SHOOT_TIME, MAX_ALIEN_SHOOT_TIME + 1);
             }
 
             timeSinceLastShot += gameTimer.Interval;
 
+            switch (bullets.Count)
+            {
+                case 1:
+                    randomShootTime /= 2;
+                    break;
+
+                case 2:
+                    randomShootTime /= 3;
+                    break;
+
+            }
             if (timeSinceLastShot >= randomShootTime)
             {
                 timeSinceLastShot = 0;
@@ -1412,6 +1478,8 @@ namespace GameTemplate.Screens
         {
             // add a life
             lives++;
+
+            levelCounter++;
 
             // get rid of ufo
             ufoOnScreen = false;
