@@ -11,6 +11,10 @@ using System.Media;
 using GameTemplate.Dialogs;
 using System.Threading;
 
+// Avery Cairns and Malcolm Wright
+// January 17th, 2018
+// Space Invaders
+
 namespace GameTemplate.Screens
 {
     public partial class GameScreen : UserControl
@@ -72,11 +76,11 @@ namespace GameTemplate.Screens
         const int ALIEN_HEIGHT = 24;
         const int UFO_WIDTH = 48;
         const int UFO_HEIGHT = 21;
-        const int UFO_SPEED = 4; // 8
+        const int UFO_SPEED = 4; 
         const int UFO_WAIT_TIME = 350;
         const int UFO_SCORE = 100;
         const int MOVEMENT_TIME = 500;
-        const int ALIEN_SHOOT_TIME = 600; // 200
+        const int ALIEN_SHOOT_TIME = 600;
         const int MAX_ALIEN_SHOOT_TIME = 800;
         const int ALIEN_SLOW_SHOOT_TIME = 400;
         const int BULLET_WIDTH = 3;
@@ -88,7 +92,7 @@ namespace GameTemplate.Screens
         int timeSinceLastShot = 0;
         int ufoCounter = 0;
         int explosionCounter = 0;
-        int levelCounter = 4;
+        int levelCounter = 1;
 
         int ALIEN_SPEED = 6; //6
         int ALIEN_THREE_QUARTER_SPEED = 10;
@@ -187,6 +191,15 @@ namespace GameTemplate.Screens
             }
         }
 
+        public void GameOver()
+        {
+            lives = 0;
+
+            gameTimer.Enabled = false;
+
+            ScreenControl.changeScreen(this, "GameOverScreen");
+        }
+
         public void MoveAliensDown()
         {
             if (alienMovedown)
@@ -200,11 +213,7 @@ namespace GameTemplate.Screens
                     || row1[i].Y >= barrier3Rect.Y + ALIEN_HEIGHT || row1[i].Y >= barrier4Rect.Y + ALIEN_HEIGHT)
                     {
                         // end game
-                        lives = 0;
-
-                        gameTimer.Enabled = false;
-
-                        ScreenControl.changeScreen(this, "GameOverScreen");
+                        GameOver();
                     }
                 }
 
@@ -212,8 +221,6 @@ namespace GameTemplate.Screens
                 {
                     row2[i] = new Rectangle(row2[i].X,
                         row2[i].Y + ALIEN_DOWNSPEED, ALIEN_WIDTH, ALIEN_HEIGHT);
-
-
                 }
 
                 for (int i = 0; i < row3.Count(); i++)
@@ -258,12 +265,6 @@ namespace GameTemplate.Screens
         Boolean aDown, sDown, dDown, wDown, cDown, vDown, xDown, zDown;
 
         #endregion
-
-        //TODO - Place game global variables here 
-        //---------------------------------------
-
-
-        //----------------------------------------
 
         // PreviewKeyDown required for UserControl instead of KeyDown as on a form
         private void GameScreen_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -345,13 +346,6 @@ namespace GameTemplate.Screens
         /// <param name="e"></param>
         private void gameTimer_Tick(object sender, EventArgs e)
         {
-            if (lives == 0)
-            {
-                gameTimer.Enabled = false;
-
-                ScreenControl.changeScreen(this, "GameOverScreen");
-            }
-
             #region main character movements
 
             if (leftArrowDown == true && playerRect.X > 0)
@@ -446,17 +440,24 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row1[i] = new Rectangle(row1[i].X - ALIEN_QUARTER_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row1[i] = new Rectangle(row1[i].X - ALIEN_HALF_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        // do one quarter
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row1[i] = new Rectangle(row1[i].X - ALIEN_THREE_QUARTER_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
                         else
                         {
                             row1[i] = new Rectangle(row1[i].X - ALIEN_SPEED,
@@ -465,14 +466,22 @@ namespace GameTemplate.Screens
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row1[i] = new Rectangle(row1[i].X + ALIEN_QUARTER_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row1[i] = new Rectangle(row1[i].X + ALIEN_HALF_SPEED,
+                                row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row1[i] = new Rectangle(row1[i].X + ALIEN_THREE_QUARTER_SPEED,
                                 row1[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -488,14 +497,22 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row2[i] = new Rectangle(row2[i].X - ALIEN_QUARTER_SPEED,
                                 row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row2[i] = new Rectangle(row2[i].X - ALIEN_HALF_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row2[i] = new Rectangle(row2[i].X - ALIEN_THREE_QUARTER_SPEED,
                                 row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -506,14 +523,22 @@ namespace GameTemplate.Screens
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row2[i] = new Rectangle(row2[i].X + ALIEN_QUARTER_SPEED,
                                 row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row2[i] = new Rectangle(row2[i].X + ALIEN_HALF_SPEED,
+                                row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row2[i] = new Rectangle(row2[i].X + ALIEN_THREE_QUARTER_SPEED,
                                 row2[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -529,14 +554,22 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row3[i] = new Rectangle(row3[i].X - ALIEN_QUARTER_SPEED,
                                 row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row3[i] = new Rectangle(row3[i].X - ALIEN_HALF_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row3[i] = new Rectangle(row3[i].X - ALIEN_THREE_QUARTER_SPEED,
                                 row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -547,14 +580,22 @@ namespace GameTemplate.Screens
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row3[i] = new Rectangle(row3[i].X + ALIEN_QUARTER_SPEED,
                                 row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row3[i] = new Rectangle(row3[i].X + ALIEN_HALF_SPEED,
+                                row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row3[i] = new Rectangle(row3[i].X + ALIEN_THREE_QUARTER_SPEED,
                                 row3[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -570,14 +611,22 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row4[i] = new Rectangle(row4[i].X - ALIEN_QUARTER_SPEED,
                                 row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row4[i] = new Rectangle(row4[i].X - ALIEN_HALF_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row4[i] = new Rectangle(row4[i].X - ALIEN_THREE_QUARTER_SPEED,
                                 row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -588,14 +637,22 @@ namespace GameTemplate.Screens
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row4[i] = new Rectangle(row4[i].X + ALIEN_QUARTER_SPEED,
                                 row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row4[i] = new Rectangle(row4[i].X + ALIEN_HALF_SPEED,
+                                row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row4[i] = new Rectangle(row4[i].X + ALIEN_THREE_QUARTER_SPEED,
                                 row4[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -611,14 +668,22 @@ namespace GameTemplate.Screens
                     // move aliens based on direction
                     if (alienDirection == Direction.LEFT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row5[i] = new Rectangle(row5[i].X - ALIEN_QUARTER_SPEED,
                                 row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row5[i] = new Rectangle(row5[i].X - ALIEN_HALF_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row5[i] = new Rectangle(row5[i].X - ALIEN_THREE_QUARTER_SPEED,
                                 row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -629,14 +694,22 @@ namespace GameTemplate.Screens
                     }
                     else if (alienDirection == Direction.RIGHT)
                     {
-                        if (sum <= 42 && sum >= 27)
+                        // check to see if there is a quarter gone
+                        if (sum <= 49 && sum >= 34)
                         {
                             row5[i] = new Rectangle(row5[i].X + ALIEN_QUARTER_SPEED,
                                 row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
-                        else if (sum <= 26 && sum >= 11)
+                        // check to see if there is half gone
+                        else if (sum <= 33 && sum >= 18)
                         {
                             row5[i] = new Rectangle(row5[i].X + ALIEN_HALF_SPEED,
+                                row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
+                        }
+                        // check to see if there are three quarters gone
+                        else if (sum <= 17 && sum >= 2)
+                        {
+                            row5[i] = new Rectangle(row5[i].X + ALIEN_THREE_QUARTER_SPEED,
                                 row5[i].Y, ALIEN_WIDTH, ALIEN_HEIGHT);
                         }
                         else
@@ -652,30 +725,122 @@ namespace GameTemplate.Screens
                 if (row5.Count != 0)
                 {
                     // check bounds
-                    if (row1[0].X <= 0 || row2[0].X <= 0
-                        || row3[0].X <= 0 || row4[0].X <= 0
-                        || row5[0].X <= 0)
+                    if (row4.Count == 0)
                     {
-                        // change direction to right
-                        alienDirection = Direction.RIGHT;
+                        if (row1[0].X <= 0 || row2[0].X <= 0
+                       || row3[0].X <= 0 || row5[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
-                        // move down
-                        alienMovedown = true;
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row5[row5.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
                     }
-
-
-                    if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
-                        || row5[row5.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                    else if (row3.Count == 0)
                     {
-                        // change direction to left
-                        alienDirection = Direction.LEFT;
+                        if (row1[0].X <= 0 || row2[0].X <= 0 || row5[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
 
-                        // move down
-                        alienMovedown = true;
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row5[row5.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }
+                    else if (row2.Count == 0)
+                    {
+                        if (row1[0].X <= 0 || row5[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row5[row5.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }
+                    else if (row1.Count == 0)
+                    {
+                        if (row5[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row5[row5.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+                    }
+                    else
+                    {
+                        if (row1[0].X <= 0 || row2[0].X <= 0 || row3[0].X <= 0
+                            || row4[0].X <= 0 || row5[0].X <= 0)
+                        {
+                            // change direction to right
+                            alienDirection = Direction.RIGHT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
+
+
+                        if (row1[row1.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row2[row2.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row3[row3.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row4[row4.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH
+                            || row5[row5.Count() - 1].X >= ScreenControl.controlWidth - ALIEN_WIDTH)
+                        {
+                            // change direction to left
+                            alienDirection = Direction.LEFT;
+
+                            // move down
+                            alienMovedown = true;
+                        }
                     }
                 }
                 else if (row4.Count != 0)
@@ -1334,9 +1499,8 @@ namespace GameTemplate.Screens
 
                         if (lives == 0)
                         {
-                            gameTimer.Enabled = false;
-
-                            ScreenControl.changeScreen(this, "GameOverScreen");
+                            // show game over screen
+                            GameOver();
                         }
                         else
                         {
@@ -1479,6 +1643,7 @@ namespace GameTemplate.Screens
             // add a life
             lives++;
 
+            // increase level
             levelCounter++;
 
             // get rid of ufo
