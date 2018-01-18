@@ -419,12 +419,17 @@ namespace GameTemplate.Screens
                 ALIEN_QUARTER_SPEED = 26;
             }
 
-            explosionCounter++;
-            if (alienKilled && explosionCounter >= 6)
+            //explosionCounter++;
+            if (alienKilled && explosionCounter <= 6)
             {
-                explosionCounter = 0;
+                explosionCounter ++;
 
+                
+            }
+            else
+            {
                 alienKilled = false;
+                explosionCounter = 0;
             }
 
             elapsed += gameTimer.Interval;
@@ -1318,7 +1323,7 @@ namespace GameTemplate.Screens
                         // get rid of bullet
                         bulletOnScreen = false;
 
-                        Refresh();
+                       // Refresh();
                         break;
                     }
                 }
@@ -1347,7 +1352,7 @@ namespace GameTemplate.Screens
                         // get rid of bullet
                         bulletOnScreen = false;
 
-                        Refresh();
+                      //  Refresh();
                         break;
                     }
                 }
@@ -1375,7 +1380,7 @@ namespace GameTemplate.Screens
                         // get rid of bullet
                         bulletOnScreen = false;
 
-                        Refresh();
+                       // Refresh();
                         break;
                     }
                 }
@@ -1403,7 +1408,7 @@ namespace GameTemplate.Screens
                         // get rid of bullet
                         bulletOnScreen = false;
 
-                        Refresh();
+                       // Refresh();
                         break;
                     }
                 }
@@ -1430,7 +1435,7 @@ namespace GameTemplate.Screens
 
                         row5.Remove(alien);
 
-                        Refresh();
+                      //  Refresh();
                         break;
                     }
                 }
