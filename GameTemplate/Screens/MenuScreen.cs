@@ -21,6 +21,9 @@ namespace GameTemplate.Screens
 
             ScreenControl.setComponentValues(this);
             defaultOverride();
+
+            var ufoSound = new System.Windows.Media.MediaPlayer();
+            ufoSound.Open(new Uri(Application.StartupPath + "/Resources/ufo_onscreen.wav"));
         }
 
         private void playButton_Click(object sender, EventArgs e)

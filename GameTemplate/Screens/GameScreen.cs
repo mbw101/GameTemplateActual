@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Media;
 using GameTemplate.Dialogs;
 using System.Threading;
+using System.IO;
 
 // Avery Cairns and Malcolm Wright
 // January 17th, 2018
@@ -60,7 +61,12 @@ namespace GameTemplate.Screens
         List<Rectangle> bullets = new List<Rectangle>(MAX_ALIEN_BULLETS);
 
         // sounds and images
-        SoundPlayer playerBullet, alienBullet, alienHit, playerHitSound,
+        //SoundPlayer playerBullet, alienBullet, 
+        //    alienHit, playerHitSound,
+        //    ufoHit, ufoSound;
+
+        System.Windows.Media.MediaPlayer playerBullet, alienBullet,
+            alienHit, playerHitSound,
             ufoHit, ufoSound;
 
         // constants
@@ -150,11 +156,23 @@ namespace GameTemplate.Screens
             ufoRect.Height = UFO_HEIGHT;
 
             // load sounds
-            playerBullet = new SoundPlayer(Properties.Resources.player_shoot);
-            ufoSound = new SoundPlayer(Properties.Resources.ufo_onscreen);
-            ufoHit = new SoundPlayer(Properties.Resources.ufo_killed);
-            alienBullet = new SoundPlayer(Properties.Resources.invader_shoot);
-            alienHit = new SoundPlayer(Properties.Resources.alienHit);
+            playerBullet = new System.Windows.Media.MediaPlayer();
+            playerBullet.Open(new Uri(Application.StartupPath + "/Resources/player_shoot.wav"));
+
+            playerBullet.Stop();
+            playerBullet.Play();
+
+            ufoSound = new System.Windows.Media.MediaPlayer();
+            ufoSound.Open(new Uri(Application.StartupPath + "/Resources/ufo_onscreen.wav"));
+
+            ufoHit = new System.Windows.Media.MediaPlayer();
+            ufoHit.Open(new Uri(Application.StartupPath + "/Resources/ufo_killed.wav"));
+
+            alienBullet = new System.Windows.Media.MediaPlayer();
+            alienBullet.Open(new Uri(Application.StartupPath + "/Resources/invader_shoot.wav"));
+
+            alienHit = new System.Windows.Media.MediaPlayer();
+            alienHit.Open(new Uri(Application.StartupPath + "/Resources/alienHit.wav"));
 
             bullet = new Bitmap(Properties.Resources.bullet);
             player = new Bitmap(Properties.Resources.playerBig);
@@ -362,10 +380,8 @@ namespace GameTemplate.Screens
             {
                 bulletOnScreen = true;
 
-                if (!ufoOnScreen)
-                {
-                    playerBullet.Play();
-                }
+                playerBullet.Stop();
+                playerBullet.Play();
 
                 // move the bullet over the player
                 bulletRect.X = playerRect.X + (playerRect.Width / 2);
@@ -1231,10 +1247,8 @@ namespace GameTemplate.Screens
                     bullets.Add(tempRectangle);
                 }
 
-                if (!ufoOnScreen)
-                {
-                    alienBullet.Play();
-                }
+                alienBullet.Stop();
+                alienBullet.Play();
             }
 
             for (int i = 0; i < bullets.Count(); i++)
@@ -1609,13 +1623,13 @@ namespace GameTemplate.Screens
 
                     ufoRect.X = ScreenControl.controlWidth - UFO_WIDTH;
                     ufoRect.Y = UFO_HEIGHT;
-
-                    ufoSound.PlayLooping();
                 }
             }
 
             if (ufoOnScreen)
             {
+                ufoSound.Play();
+
                 ufoRect.X -= UFO_SPEED;
             }
 
@@ -1700,13 +1714,15 @@ namespace GameTemplate.Screens
             {
                 if (ufoOnScreen)
                 {
-                    ufoSound.PlayLooping();
+                    ufoSound.Stop();
                 }
 
                 gameTimer.Enabled = true;
             }
             if (result == DialogResult.Abort)
             {
+                ufoOnScreen = false;
+
                 ScreenControl.changeScreen(this, "MenuScreen");
             }
         }
