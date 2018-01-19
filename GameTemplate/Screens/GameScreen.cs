@@ -61,10 +61,6 @@ namespace GameTemplate.Screens
         List<Rectangle> bullets = new List<Rectangle>(MAX_ALIEN_BULLETS);
 
         // sounds and images
-        //SoundPlayer playerBullet, alienBullet, 
-        //    alienHit, playerHitSound,
-        //    ufoHit, ufoSound;
-
         System.Windows.Media.MediaPlayer playerBullet, alienBullet,
             alienHit, playerHitSound,
             ufoHit, ufoSound;
@@ -261,10 +257,6 @@ namespace GameTemplate.Screens
                     if (row5[i].Y >= barrier1Rect.Y + ALIEN_HEIGHT || row5[i].Y >= barrier2Rect.Y + ALIEN_HEIGHT
                     || row5[i].Y >= barrier3Rect.Y + ALIEN_HEIGHT || row5[i].Y >= barrier4Rect.Y + ALIEN_HEIGHT)
                     {
-                        //gameTimer.Enabled = false;
-
-                        //ScreenControl.changeScreen(this, "GameOverScreen");
-
                         // end game
                         lives = 0;
                     }
@@ -1319,12 +1311,7 @@ namespace GameTemplate.Screens
                     if (alien.IntersectsWith(bulletRect))
                     {
                         // play explosion
-                        if (!ufoOnScreen)
-                        {
-                            playerBullet.Stop();
-
-                            alienHit.Play();
-                        }
+                        alienHit.Play();
 
                         alienKilled = true;
 
@@ -1348,12 +1335,7 @@ namespace GameTemplate.Screens
                     {
 
                         // play explosion
-                        if (!ufoOnScreen)
-                        {
-                            playerBullet.Stop();
-
-                            alienHit.Play();
-                        }
+                        alienHit.Play();
 
                         alienKilled = true;
 
@@ -1376,12 +1358,7 @@ namespace GameTemplate.Screens
                     if (alien.IntersectsWith(bulletRect))
                     {
                         // play explosion
-                        if (!ufoOnScreen)
-                        {
-                            playerBullet.Stop();
-
-                            alienHit.Play();
-                        }
+                        alienHit.Play();
 
                         alienKilled = true;
 
@@ -1408,12 +1385,7 @@ namespace GameTemplate.Screens
                         alienKilled = true;
 
                         // play explosion
-                        if (!ufoOnScreen)
-                        {
-                            playerBullet.Stop();
-
-                            alienHit.Play();
-                        }
+                        alienHit.Play();
 
                         row4.Remove(alien);
 
@@ -1438,12 +1410,7 @@ namespace GameTemplate.Screens
                         // get rid of bullet
                         bulletOnScreen = false;
                         // play explosion
-                        if (!ufoOnScreen)
-                        {
-                            playerBullet.Stop();
-
-                            alienHit.Play();
-                        }
+                        alienHit.Play();
 
                         score += ALIEN1_SCORE;
 
@@ -1621,6 +1588,8 @@ namespace GameTemplate.Screens
                 {
                     ufoOnScreen = true;
 
+                    ufoSound.Play();
+
                     ufoRect.X = ScreenControl.controlWidth - UFO_WIDTH;
                     ufoRect.Y = UFO_HEIGHT;
                 }
@@ -1628,7 +1597,7 @@ namespace GameTemplate.Screens
 
             if (ufoOnScreen)
             {
-                ufoSound.Play();
+                // figure out how to loop sound
 
                 ufoRect.X -= UFO_SPEED;
             }
