@@ -11,6 +11,7 @@ using System.Media;
 using GameTemplate.Dialogs;
 using System.Threading;
 using System.IO;
+//using System.Drawing.Text;
 
 // Avery Cairns and Malcolm Wright
 // January 17th, 2018
@@ -110,6 +111,10 @@ namespace GameTemplate.Screens
             pen = new Pen(Color.White, 10);
             solidBrush = new SolidBrush(Color.White);
             greenBrush = new SolidBrush(Color.Green);
+
+            //PrivateFontCollection pfc = new PrivateFontCollection();
+            //pfc.AddFontFile(Application.StartupPath + @"/Resources/Minecraft.ttf");
+            // pfc.Families[0]
 
             titleFont = new Font("Verdana", 36, FontStyle.Regular);
             menuFont = new Font("Verdana", 24, FontStyle.Regular);
