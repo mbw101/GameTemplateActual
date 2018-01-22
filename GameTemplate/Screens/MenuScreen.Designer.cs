@@ -33,6 +33,10 @@
             this.gameTitle = new System.Windows.Forms.Label();
             this.instructionButton = new System.Windows.Forms.Button();
             this.creditLabel = new System.Windows.Forms.Label();
+            this.alien1Label = new System.Windows.Forms.Label();
+            this.alien2Label = new System.Windows.Forms.Label();
+            this.alien3Label = new System.Windows.Forms.Label();
+            this.randomAlienLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // exitButton
@@ -92,17 +96,55 @@
             // 
             this.creditLabel.AutoSize = true;
             this.creditLabel.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.creditLabel.ForeColor = System.Drawing.Color.White;
             this.creditLabel.Location = new System.Drawing.Point(28, 271);
             this.creditLabel.Name = "creditLabel";
             this.creditLabel.Size = new System.Drawing.Size(457, 25);
             this.creditLabel.TabIndex = 11;
             this.creditLabel.Text = "Made by Avery Cairns and Malcolm Wright";
             // 
+            // alien1Label
+            // 
+            this.alien1Label.ForeColor = System.Drawing.Color.Black;
+            this.alien1Label.Image = global::GameTemplate.Properties.Resources.alien10altBig;
+            this.alien1Label.Location = new System.Drawing.Point(218, 67);
+            this.alien1Label.Name = "alien1Label";
+            this.alien1Label.Size = new System.Drawing.Size(100, 23);
+            this.alien1Label.TabIndex = 12;
+            // 
+            // alien2Label
+            // 
+            this.alien2Label.Image = global::GameTemplate.Properties.Resources.alien20altBig;
+            this.alien2Label.Location = new System.Drawing.Point(218, 120);
+            this.alien2Label.Name = "alien2Label";
+            this.alien2Label.Size = new System.Drawing.Size(100, 23);
+            this.alien2Label.TabIndex = 13;
+            // 
+            // alien3Label
+            // 
+            this.alien3Label.Image = global::GameTemplate.Properties.Resources.alien40Big;
+            this.alien3Label.Location = new System.Drawing.Point(222, 168);
+            this.alien3Label.Name = "alien3Label";
+            this.alien3Label.Size = new System.Drawing.Size(100, 23);
+            this.alien3Label.TabIndex = 14;
+            // 
+            // randomAlienLabel
+            // 
+            this.randomAlienLabel.Image = global::GameTemplate.Properties.Resources.alienRandomBig;
+            this.randomAlienLabel.Location = new System.Drawing.Point(230, 226);
+            this.randomAlienLabel.Name = "randomAlienLabel";
+            this.randomAlienLabel.Size = new System.Drawing.Size(100, 23);
+            this.randomAlienLabel.TabIndex = 15;
+            // 
             // MenuScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Maroon;
+            this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.randomAlienLabel);
+            this.Controls.Add(this.alien3Label);
+            this.Controls.Add(this.alien2Label);
+            this.Controls.Add(this.alien1Label);
             this.Controls.Add(this.creditLabel);
             this.Controls.Add(this.instructionButton);
             this.Controls.Add(this.exitButton);
@@ -123,5 +165,9 @@
         private System.Windows.Forms.Label gameTitle;
         private System.Windows.Forms.Button instructionButton;
         private System.Windows.Forms.Label creditLabel;
+        private System.Windows.Forms.Label alien1Label;
+        private System.Windows.Forms.Label alien2Label;
+        private System.Windows.Forms.Label alien3Label;
+        private System.Windows.Forms.Label randomAlienLabel;
     }
 }

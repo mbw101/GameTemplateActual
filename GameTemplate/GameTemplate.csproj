@@ -209,13 +209,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\alien10altBig.png" />
+    <None Include="Resources\alien10altBig.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\alien20altBig.png" />
+    <None Include="Resources\alien20altBig.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\alien40altBig.png" />
+    <None Include="Resources\alien40altBig.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\explosionBig.png" />
@@ -224,7 +230,9 @@
     <None Include="Resources\playerExplosionBig.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\alienRandomBig.png" />
+    <None Include="Resources\alienRandomBig.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

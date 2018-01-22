@@ -60,12 +60,43 @@ namespace GameTemplate.Screens
             {
                 if (c != creditLabel)
                 {
-                    c.Location = new Point(c.Location.X, c.Location.Y + 75);
-                }
+                    if (c == playButton)
+                    {
+                        c.Location = new Point(200, 475);
+                    }
+                    else if (c == instructionButton)
+                    {
+                        c.Location = new Point(400, 475);
+                    }
+                    else if (c == exitButton)
+                    {
+                        c.Location = new Point(600, 475);
+                    }
+                    else if (c == alien1Label)
+                    {
+                        c.Location = new Point(200, 200);
+                    }
+                    else if (c == alien2Label)
+                    {
+                        c.Location = new Point(200, 250);
+                    }
+                    else if (c == alien3Label)
+                    {
+                        c.Location = new Point(200, 300);
+                    }
+                    else if (c == randomAlienLabel)
+                    {
+                        c.Location = new Point(200, 350);
+                    }
+                    else
+                    {
+                        c.Location = new Point(c.Location.X, c.Location.Y + 75);
+                    }
+                }         
                 else
                 {
                     c.Font = new Font("Verdana", 24);
-                    c.Location = new Point(ScreenControl.controlWidth / 2 - c.Size.Width / 2, 460);
+                    c.Location = new Point(ScreenControl.controlWidth / 2 - c.Size.Width / 2, 550);
                 }
             }
 
