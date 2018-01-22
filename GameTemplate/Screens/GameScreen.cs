@@ -202,11 +202,11 @@ namespace GameTemplate.Screens
                 tempRect4 = new Rectangle(100 + (45 * i), 250, ALIEN_WIDTH, ALIEN_HEIGHT); 
                 tempRect5 = new Rectangle(100 + (45 * i), 300, ALIEN_WIDTH, ALIEN_HEIGHT); 
 
-                row1.Add(tempRect);
+                row1.Add(tempRect); // top
                 row2.Add(tempRect2);
-                row3.Add(tempRect3);
+                row3.Add(tempRect3); // middle
                 row4.Add(tempRect4);
-                row5.Add(tempRect5);
+                row5.Add(tempRect5); // bottom
             }
         }
 
@@ -1187,7 +1187,7 @@ namespace GameTemplate.Screens
 
                     bullets.Add(tempBullet);
                 }
-                else if (row4.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS)
+                if (row4.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS && row5.Count <= 5)
                 {
                     int range = row4.Count;
                     int randAlien = randGen.Next(0, range);
@@ -1201,7 +1201,7 @@ namespace GameTemplate.Screens
 
                     bullets.Add(tempBullet);
                 }
-                else if (row3.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS)
+                if (row3.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS && row4.Count <= 5)
                 {
                     int range = row3.Count;
                     int randAlien = randGen.Next(0, range);
@@ -1215,7 +1215,7 @@ namespace GameTemplate.Screens
 
                     bullets.Add(tempBullet);
                 }
-                else if (row2.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS)
+                if (row2.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS && row3.Count <= 5)
                 {
                     int range = row2.Count;
                     int randAlien = randGen.Next(0, range);
@@ -1229,7 +1229,7 @@ namespace GameTemplate.Screens
 
                     bullets.Add(tempRectangle);
                 }
-                else if (row1.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS)
+                if (row1.Count != 0 && bullets.Count() < MAX_ALIEN_BULLETS && row2.Count <= 5)
                 {
                     int range = row1.Count;
                     int randAlien = randGen.Next(0, range);
