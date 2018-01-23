@@ -88,6 +88,27 @@ namespace GameTemplate.Screens
                     {
                         c.Location = new Point(200, 350);
                     }
+                    else if (c is Label)
+                    {
+                        // score labels
+                        if (c == score1Label)
+                        {
+                            c.Location = new Point(c.Location.X, 190);
+                        }
+                        else if (c == score2Label)
+                        {
+                            c.Location = new Point(c.Location.X, 240);
+                        }
+                        else if (c == score3Label)
+                        {
+                            c.Location = new Point(c.Location.X, 290);
+                        }
+                        else if (c == score4Label)
+                        {
+                            c.Location = new Point(c.Location.X, 340);
+                        }
+                        c.Font = new Font("Verdana", 22);
+                    }
                     else
                     {
                         c.Location = new Point(c.Location.X, c.Location.Y + 75);
@@ -95,6 +116,7 @@ namespace GameTemplate.Screens
                 }         
                 else
                 {
+                    // credit label
                     c.Font = new Font("Verdana", 24);
                     c.Location = new Point(ScreenControl.controlWidth / 2 - c.Size.Width / 2, 550);
                 }

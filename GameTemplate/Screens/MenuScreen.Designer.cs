@@ -37,6 +37,10 @@
             this.alien2Label = new System.Windows.Forms.Label();
             this.alien3Label = new System.Windows.Forms.Label();
             this.randomAlienLabel = new System.Windows.Forms.Label();
+            this.score1Label = new System.Windows.Forms.Label();
+            this.score2Label = new System.Windows.Forms.Label();
+            this.score3Label = new System.Windows.Forms.Label();
+            this.score4Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // exitButton
@@ -136,11 +140,60 @@
             this.randomAlienLabel.Size = new System.Drawing.Size(100, 23);
             this.randomAlienLabel.TabIndex = 15;
             // 
+            // score1Label
+            // 
+            this.score1Label.AutoSize = true;
+            this.score1Label.Font = new System.Drawing.Font("Verdana", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.score1Label.ForeColor = System.Drawing.Color.White;
+            this.score1Label.Location = new System.Drawing.Point(549, 67);
+            this.score1Label.Name = "score1Label";
+            this.score1Label.Size = new System.Drawing.Size(361, 42);
+            this.score1Label.TabIndex = 16;
+            this.score1Label.Text = "=                 10 pts";
+            // 
+            // score2Label
+            // 
+            this.score2Label.AutoSize = true;
+            this.score2Label.Font = new System.Drawing.Font("Verdana", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.score2Label.ForeColor = System.Drawing.Color.White;
+            this.score2Label.Location = new System.Drawing.Point(549, 120);
+            this.score2Label.Name = "score2Label";
+            this.score2Label.Size = new System.Drawing.Size(361, 42);
+            this.score2Label.TabIndex = 17;
+            this.score2Label.Text = "=                 20 pts";
+            // 
+            // score3Label
+            // 
+            this.score3Label.AutoSize = true;
+            this.score3Label.Font = new System.Drawing.Font("Verdana", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.score3Label.ForeColor = System.Drawing.Color.White;
+            this.score3Label.Location = new System.Drawing.Point(549, 168);
+            this.score3Label.Name = "score3Label";
+            this.score3Label.Size = new System.Drawing.Size(361, 42);
+            this.score3Label.TabIndex = 18;
+            this.score3Label.Text = "=                 40 pts";
+            // 
+            // score4Label
+            // 
+            this.score4Label.AutoSize = true;
+            this.score4Label.BackColor = System.Drawing.Color.Black;
+            this.score4Label.Font = new System.Drawing.Font("Verdana", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.score4Label.ForeColor = System.Drawing.Color.White;
+            this.score4Label.Location = new System.Drawing.Point(549, 223);
+            this.score4Label.Name = "score4Label";
+            this.score4Label.Size = new System.Drawing.Size(362, 42);
+            this.score4Label.TabIndex = 19;
+            this.score4Label.Text = "=                ??? pts";
+            // 
             // MenuScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.score4Label);
+            this.Controls.Add(this.score3Label);
+            this.Controls.Add(this.score2Label);
+            this.Controls.Add(this.score1Label);
             this.Controls.Add(this.randomAlienLabel);
             this.Controls.Add(this.alien3Label);
             this.Controls.Add(this.alien2Label);
@@ -152,7 +205,7 @@
             this.Controls.Add(this.gameTitle);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MenuScreen";
-            this.Size = new System.Drawing.Size(321, 296);
+            this.Size = new System.Drawing.Size(794, 362);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,5 +222,9 @@
         private System.Windows.Forms.Label alien2Label;
         private System.Windows.Forms.Label alien3Label;
         private System.Windows.Forms.Label randomAlienLabel;
+        private System.Windows.Forms.Label score1Label;
+        private System.Windows.Forms.Label score2Label;
+        private System.Windows.Forms.Label score3Label;
+        private System.Windows.Forms.Label score4Label;
     }
 }

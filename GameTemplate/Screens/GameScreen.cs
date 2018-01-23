@@ -11,6 +11,7 @@ using System.Media;
 using GameTemplate.Dialogs;
 using System.Threading;
 using System.IO;
+
 //using System.Drawing.Text;
 
 // Avery Cairns and Malcolm Wright
@@ -64,8 +65,10 @@ namespace GameTemplate.Screens
         // sounds and images
         System.Windows.Media.MediaPlayer playerBullet, alienBullet,
             alienHit, playerHitSound,
-            ufoHit, ufoSound;
+            ufoHit;
 
+        SoundPlayer ufoSound;
+        
         // constants
         const int ALIEN1_SCORE = 10;
         const int ALIEN2_SCORE = 20;
@@ -160,11 +163,7 @@ namespace GameTemplate.Screens
             playerBullet = new System.Windows.Media.MediaPlayer();
             playerBullet.Open(new Uri(Application.StartupPath + "/Resources/player_shoot.wav"));
 
-            playerBullet.Stop();
-            playerBullet.Play();
-
-            ufoSound = new System.Windows.Media.MediaPlayer();
-            ufoSound.Open(new Uri(Application.StartupPath + "/Resources/ufo_onscreen.wav"));
+            ufoSound = new SoundPlayer(Properties.Resources.ufo_onscreen);
 
             ufoHit = new System.Windows.Media.MediaPlayer();
             ufoHit.Open(new Uri(Application.StartupPath + "/Resources/ufo_killed.wav"));
@@ -174,6 +173,9 @@ namespace GameTemplate.Screens
 
             alienHit = new System.Windows.Media.MediaPlayer();
             alienHit.Open(new Uri(Application.StartupPath + "/Resources/alienHit.wav"));
+
+            playerHitSound = new System.Windows.Media.MediaPlayer();
+            playerHitSound.Open(new Uri(Application.StartupPath + "/Resources/playerExplosion.wav"));
 
             bullet = new Bitmap(Properties.Resources.bullet);
             player = new Bitmap(Properties.Resources.playerBig);
@@ -1498,6 +1500,8 @@ namespace GameTemplate.Screens
                             lives--;
                             bullets.Remove(bullets[i]);
                             playerHit = true;
+
+                            playerHitSound.Play();
                         }
 
                         break;
@@ -1579,7 +1583,10 @@ namespace GameTemplate.Screens
 
             #region UFO logic
 
-
+            if (!ufoOnScreen)
+            {
+                ufoSound.Stop();
+            }
             int ufoTime = randGen.Next(UFO_WAIT_TIME, UFO_WAIT_TIME * 2);
             ufoCounter++;
 
@@ -1593,7 +1600,7 @@ namespace GameTemplate.Screens
                 {
                     ufoOnScreen = true;
 
-                    ufoSound.Play();
+                    ufoSound.PlayLooping();
 
                     ufoRect.X = ScreenControl.controlWidth - UFO_WIDTH;
                     ufoRect.Y = UFO_HEIGHT;
