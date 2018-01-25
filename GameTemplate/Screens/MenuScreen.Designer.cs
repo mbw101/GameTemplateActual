@@ -149,7 +149,7 @@
             this.score1Label.Name = "score1Label";
             this.score1Label.Size = new System.Drawing.Size(361, 42);
             this.score1Label.TabIndex = 16;
-            this.score1Label.Text = "=                 10 pts";
+            this.score1Label.Text = "   =              10 pts";
             // 
             // score2Label
             // 
@@ -160,7 +160,7 @@
             this.score2Label.Name = "score2Label";
             this.score2Label.Size = new System.Drawing.Size(361, 42);
             this.score2Label.TabIndex = 17;
-            this.score2Label.Text = "=                 20 pts";
+            this.score2Label.Text = "   =              20 pts";
             // 
             // score3Label
             // 
@@ -171,7 +171,7 @@
             this.score3Label.Name = "score3Label";
             this.score3Label.Size = new System.Drawing.Size(361, 42);
             this.score3Label.TabIndex = 18;
-            this.score3Label.Text = "=                 40 pts";
+            this.score3Label.Text = "   =              40 pts";
             // 
             // score4Label
             // 
@@ -183,7 +183,7 @@
             this.score4Label.Name = "score4Label";
             this.score4Label.Size = new System.Drawing.Size(362, 42);
             this.score4Label.TabIndex = 19;
-            this.score4Label.Text = "=                ??? pts";
+            this.score4Label.Text = "   =             ??? pts";
             // 
             // MenuScreen
             // 
