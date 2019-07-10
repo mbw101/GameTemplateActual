@@ -44,12 +44,14 @@ namespace GameTemplate.Screens
         SolidBrush solidBrush, greenBrush;
         Pen pen;
         Font titleFont, menuFont, subFont;
-        Image alien1, alien2, alien3, ufo, player, playerExplosion,
+        Image alien1, alien2, alien3, ufo, playerImage, playerExplosion,
              barrier1, barrier2, barrier3, barrier4, bullet, alienExplosion;
         // we can change the barrier image depending on the health
 
-        Rectangle bulletRect, playerRect, barrier1Rect, barrier2Rect,
+        Rectangle bulletRect, barrier1Rect, barrier2Rect,
             barrier3Rect, barrier4Rect, ufoRect, destroyedAlienRect;
+
+        Player player;
 
         List<Rectangle> row1 = new List<Rectangle>(11);
         List<Rectangle> row2 = new List<Rectangle>(11);
@@ -98,7 +100,8 @@ namespace GameTemplate.Screens
         int explosionCounter = 0;
         int levelCounter = 1;
 
-        int ALIEN_SPEED = 6; //6
+        // alien speeds when they move down further
+        int ALIEN_SPEED = 6; 
         int ALIEN_THREE_QUARTER_SPEED = 10;
         int ALIEN_HALF_SPEED = 14;
         int ALIEN_QUARTER_SPEED = 18;
@@ -107,6 +110,7 @@ namespace GameTemplate.Screens
         {
             InitializeComponent();
 
+            // reset score
             score = 0;
 
             pen = new Pen(Color.White, 10);
@@ -118,7 +122,6 @@ namespace GameTemplate.Screens
             subFont = new Font("Verdana", 24, FontStyle.Regular);
 
             // set up rectangles
-
             barrier1Rect.Width = 72;
             barrier1Rect.X = 200 - (barrier1Rect.Width / 2);
             barrier1Rect.Y = 450;
@@ -139,10 +142,11 @@ namespace GameTemplate.Screens
             barrier4Rect.Width = 72;
             barrier4Rect.Height = 54;
 
-            playerRect.Y = 550;
-            playerRect.Width = 45;
-            playerRect.Height = 24;
-            playerRect.X = barrier1Rect.X + barrier1Rect.Width / 2 - playerRect.Width / 2;
+            int playerWidth = 45;
+            int playerHeight = 24;
+
+            player = new Player(barrier1Rect.X + barrier1Rect.Width / 2 - playerWidth / 2,
+                550, playerWidth, playerHeight, 0, 0);
 
             bulletRect.X = 0;
             bulletRect.Y = 0;
@@ -173,7 +177,7 @@ namespace GameTemplate.Screens
             playerHitSound.Open(new Uri(Application.StartupPath + "/Resources/playerExplosion.wav"));
 
             bullet = new Bitmap(Properties.Resources.bullet);
-            player = new Bitmap(Properties.Resources.playerBig);
+            playerImage = new Bitmap(Properties.Resources.playerBig);
             playerExplosion = new Bitmap(Properties.Resources.playerExplosionBig);
             alienExplosion = new Bitmap(Properties.Resources.explosionBig);
             alien1 = new Bitmap(Properties.Resources.alien10Big);
@@ -361,14 +365,16 @@ namespace GameTemplate.Screens
         {
             #region main character movements
 
-            if (leftArrowDown == true && playerRect.X > 0)
+            if (leftArrowDown == true && player.getX() > 0) 
             {
-                playerRect.X -= PLAYER_SPEED;
+                player.setSpeed(-PLAYER_SPEED, 0);
+                player.move();
             }
 
-            if (rightArrowDown == true && playerRect.X < (Width - 45) - PLAYER_SPEED)
+            if (rightArrowDown == true && player.getX() < (Width - 45) - PLAYER_SPEED)
             {
-                playerRect.X += PLAYER_SPEED;
+                player.setSpeed(PLAYER_SPEED, 0);
+                player.move();
             }
 
             if (spaceDown && !bulletOnScreen)
@@ -379,8 +385,8 @@ namespace GameTemplate.Screens
                 playerBullet.Play();
 
                 // move the bullet over the player
-                bulletRect.X = playerRect.X + (playerRect.Width / 2);
-                bulletRect.Y = playerRect.Y - 5;
+                bulletRect.X = player.getX() + (player.getRect().Width / 2);
+                bulletRect.Y = player.getY() - 5;
             }
 
             if (bulletOnScreen)
@@ -402,12 +408,13 @@ namespace GameTemplate.Screens
                 playerHit = false;
 
                 // place rect below the first barrier
-                playerRect.X = barrier1Rect.X + barrier1Rect.Width / 2 - playerRect.Width / 2;
+                int playerX = barrier1Rect.X + barrier1Rect.Width / 2 - player.getRect().Width / 2;
+                player.setPosition(playerX, player.getY());
             }
 
             #endregion
 
-            #region monster movements - TO BE COMPLETED
+            #region monster movements 
 
             if (levelCounter == 2)
             {
@@ -1268,7 +1275,7 @@ namespace GameTemplate.Screens
 
             #endregion
 
-            #region collision detection - TO BE COMPLETED
+            #region collision detection 
 
             // only check collision if bullet is on screen
             if (bulletOnScreen)
@@ -1465,7 +1472,7 @@ namespace GameTemplate.Screens
                     }
 
                     // check to see if they collide with the player
-                    if (bullets[i].IntersectsWith(playerRect))
+                    if (bullets[i].IntersectsWith(player.getRect()))
                     {
                         if (ufoOnScreen)
                         {
@@ -1704,12 +1711,11 @@ namespace GameTemplate.Screens
             //draw rectangle to screen
             if (!playerHit)
             {
-                e.Graphics.DrawImage(player, playerRect.X, playerRect.Y,
-                    playerRect.Width, playerRect.Height);
+                e.Graphics.DrawImage(playerImage, player.getRect());
             }
             else
             {
-                e.Graphics.DrawImage(playerExplosion, playerRect);
+                e.Graphics.DrawImage(playerExplosion, player.getRect());
             }
 
             e.Graphics.DrawString("Score: " + score, subFont,
