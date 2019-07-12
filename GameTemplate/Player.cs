@@ -102,19 +102,35 @@ namespace GameTemplate
             return playerRectangle;
         }
 
-
-        public void collision(Form1 form)
-        {
-
-        }
-
         /// <summary>
         /// Checks collision with a bullet
         /// </summary>
         /// <param name="bullet"></param>
-        public void collision(Bullet bullet)
+        public bool collision(Bullet bullet)
         {
-            // TODO: Complete this method
+            // return true if the player rectangle collides with the bullet
+            if (playerRectangle.IntersectsWith(bullet.getRect()))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks the collision of the player and alien
+        /// Returns true if they collided
+        /// </summary>
+        /// <param name="alien">The alien that is being checked</param>
+        /// <returns></returns>
+        public bool collision(Alien alien)
+        {
+            if (alien.getRect().IntersectsWith(playerRectangle))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
